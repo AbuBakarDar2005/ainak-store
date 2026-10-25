@@ -14,9 +14,15 @@ dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
+const uploadsDir = process.env.VERCEL
+  ? path.join('/tmp', 'uploads')
+  : path.join(__dirname, 'uploads');
+try {
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  }
+} catch (e) {
+  console.warn("Notice: could not create uploads directory:", e.message);
 }
 
 const app = express();
@@ -54,6 +60,24 @@ const aiLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 30, // 30 AI queries per minute
   message: { error: 'Stylist rate limit reached. Please wait a moment.' }
+});
+
+// Middleware: Normalize incoming Vercel serverless URLs
+app.use((req, res, next) => {
+  if (!req.url.startsWith('/api')) {
+    req.url = '/api' + (req.url.startsWith('/') ? req.url : '/' + req.url);
+  }
+  next();
+});
+
+// Root API Healthcheck
+app.get('/api', (req, res) => {
+  res.json({
+    status: 'online',
+    store: 'NEXT VISION',
+    version: '1.0.0',
+    timestamp: new Date().toISOString()
+  });
 });
 
 app.use('/api/', apiLimiter);
@@ -900,10 +924,11 @@ app.get('/api/admin/orders/export-csv', authenticateAdmin, (req, res) => {
 });
 
 // Start Express Server
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`[NEXT VISION] API Server running securely on http://localhost:${PORT}`);
   });
 }
 
+export default app;
 export { app };

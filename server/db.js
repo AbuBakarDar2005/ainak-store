@@ -6,7 +6,10 @@ import { INITIAL_PARTNER_STORES } from './initialStores.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DB_PATH = path.join(__dirname, 'db.json');
+const LOCAL_DB_PATH = path.join(__dirname, 'db.json');
+const DB_PATH = process.env.VERCEL
+  ? path.join('/tmp', 'db.json')
+  : LOCAL_DB_PATH;
 
 const INITIAL_PRODUCTS = [
   {
@@ -362,6 +365,14 @@ class Database {
 
   load() {
     try {
+      if (process.env.VERCEL && !fs.existsSync(DB_PATH) && fs.existsSync(LOCAL_DB_PATH)) {
+        try {
+          fs.copyFileSync(LOCAL_DB_PATH, DB_PATH);
+        } catch (copyErr) {
+          console.warn("Notice: could not copy seed db.json to /tmp:", copyErr.message);
+        }
+      }
+
       if (fs.existsSync(DB_PATH)) {
         const raw = fs.readFileSync(DB_PATH, 'utf-8');
         const parsed = JSON.parse(raw);
@@ -451,7 +462,7 @@ class Database {
     try {
       fs.writeFileSync(DB_PATH, JSON.stringify(dataToSave || this.data, null, 2), 'utf-8');
     } catch (err) {
-      console.error("Error writing db.json:", err);
+      console.warn("Notice: db.json write skipped or failed (common in serverless):", err.message);
     }
   }
 
