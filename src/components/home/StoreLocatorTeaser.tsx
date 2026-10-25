@@ -55,53 +55,70 @@ export const StoreLocatorTeaser: React.FC<StoreLocatorTeaserProps> = ({ onOpenLo
           </button>
         </div>
 
-        {/* 3 Featured Stores Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {featuredShops.map((shop) => (
-            <div
-              key={shop.id}
-              onClick={onOpenLocator}
-              className="group bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/10 hover:border-champagne-400/50 transition-all duration-300 cursor-pointer shadow-lg hover:-translate-y-1 flex flex-col justify-between"
-            >
-              <div>
-                <div className="relative aspect-[16/10] rounded-xl overflow-hidden mb-4 border border-white/10">
-                  <img
-                    src={shop.image}
-                    alt={shop.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-luxury-950/90 text-gold border border-white/15 shadow">
-                    {shop.city} Flagship
-                  </span>
+        {/* Featured Stores Cards Grid */}
+        {featuredShops.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            {featuredShops.map((shop) => (
+              <div
+                key={shop.id}
+                onClick={onOpenLocator}
+                className="group bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/10 hover:border-champagne-400/50 transition-all duration-300 cursor-pointer shadow-lg hover:-translate-y-1 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="relative aspect-[16/10] rounded-xl overflow-hidden mb-4 border border-white/10">
+                    <img
+                      src={shop.image}
+                      alt={shop.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                    <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-luxury-950/90 text-gold border border-white/15 shadow">
+                      {shop.city}
+                    </span>
+                  </div>
+
+                  <h3 className="font-serif font-bold text-base text-white group-hover:text-champagne-300 transition-colors">
+                    {shop.name}
+                  </h3>
+                  <p className="text-xs text-luxury-400 mt-1 flex items-start gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-champagne-500 shrink-0 mt-0.5" />
+                    <span>{shop.address}</span>
+                  </p>
                 </div>
 
-                <h3 className="font-serif font-bold text-base text-white group-hover:text-champagne-300 transition-colors">
-                  {shop.name}
-                </h3>
-                <p className="text-xs text-luxury-400 mt-1 flex items-start gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-champagne-500 shrink-0 mt-0.5" />
-                  <span>{shop.address}</span>
-                </p>
+                <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-luxury-300">
+                  <span className="flex items-center gap-1 font-semibold text-emerald-400">
+                    <CheckCircle2 className="w-3.5 h-3.5" /> {shop.services?.[0] || 'Authorized Optician'}
+                  </span>
+                  <span className="text-champagne-300 font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                    View On Map →
+                  </span>
+                </div>
               </div>
-
-              <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-luxury-300">
-                <span className="flex items-center gap-1 font-semibold text-emerald-400">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> Free Eye Exam
-                </span>
-                <span className="text-champagne-300 font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">
-                  View On Map →
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mb-10 p-8 rounded-2xl bg-white/5 border border-white/10 text-center max-w-xl mx-auto space-y-3">
+            <Compass className="w-10 h-10 text-gold mx-auto" />
+            <h3 className="font-serif font-bold text-lg text-white">Interactive Optical Locator</h3>
+            <p className="text-xs text-luxury-300 leading-relaxed">
+              Find verified optical shops, eye exams, and same-day lens fitting near your location using our free OpenStreetMap GPS locator.
+            </p>
+            <button
+              onClick={onOpenLocator}
+              className="px-5 py-2.5 bg-champagne-500 hover:bg-champagne-600 text-luxury-950 font-bold rounded-xl text-xs transition-colors inline-flex items-center gap-2 shadow-lg"
+            >
+              <Navigation className="w-3.5 h-3.5" />
+              <span>Launch Live Map</span>
+            </button>
+          </div>
+        )}
 
         {/* Metric Badges Banner */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-2xl bg-white/5 border border-white/10 text-center text-xs">
           <div>
-            <p className="text-xl sm:text-2xl font-bold font-serif text-white">18+ Stores</p>
-            <p className="text-luxury-400 text-[11px] mt-0.5">Nationwide Across Pakistan</p>
+            <p className="text-xl sm:text-2xl font-bold font-serif text-white">Live GPS</p>
+            <p className="text-luxury-400 text-[11px] mt-0.5">Interactive Pakistan Map</p>
           </div>
           <div>
             <p className="text-xl sm:text-2xl font-bold font-serif text-champagne-400">100% Free</p>

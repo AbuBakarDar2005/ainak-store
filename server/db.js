@@ -377,19 +377,11 @@ class Database {
         const raw = fs.readFileSync(DB_PATH, 'utf-8');
         const parsed = JSON.parse(raw);
         parsed.settings = { ...INITIAL_SETTINGS, ...(parsed.settings || {}) };
-        parsed.partnerStores = (parsed.partnerStores && parsed.partnerStores.length > 0) ? parsed.partnerStores : INITIAL_PARTNER_STORES;
-        parsed.partnerAdmins = (parsed.partnerAdmins || []).filter(
-          pa => pa.username !== 'dr_kamran' && pa.username !== 'optician_tariq'
+        parsed.partnerStores = (parsed.partnerStores || []).filter(s => s.isAdminAdded);
+        parsed.partnerAdmins = [];
+        parsed.automationLogs = (parsed.automationLogs || []).filter(
+          l => !l.message?.toLowerCase().includes('partner admin')
         );
-        parsed.automationLogs = parsed.automationLogs || [
-          {
-            id: 'log-init',
-            timestamp: new Date().toISOString(),
-            type: 'system',
-            status: 'Ready',
-            message: 'Automation engine online. Ready for Google Sheets Webhook and WhatsApp dispatch.'
-          }
-        ];
         return parsed;
       }
     } catch (err) {
