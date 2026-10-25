@@ -407,7 +407,7 @@
     {
       "id": "ORD-98805",
       "createdAt": "2026-10-23T11:10:31.550Z",
-      "status": "Pending",
+      "status": "Delivered",
       "customer": {
         "name": "MUHAMMAD ABUBAKAR DAR",
         "email": "darmuhammadabubakar9@gmail.com",
@@ -466,7 +466,7 @@
     {
       "id": "ORD-54282",
       "createdAt": "2026-10-23T11:09:36.011Z",
-      "status": "Pending",
+      "status": "Delivered",
       "customer": {
         "name": "Zainab Ahmed",
         "phone": "03219876543",
@@ -493,7 +493,7 @@
     {
       "id": "ORD-95202",
       "createdAt": "2026-10-23T10:52:49.580Z",
-      "status": "Pending",
+      "status": "Cancelled",
       "customer": {
         "name": "nomi habshi",
         "email": "darmuhammadabubakar9@gmail.com",
@@ -533,7 +533,7 @@
     {
       "id": "ORD-47610",
       "createdAt": "2026-10-23T09:43:21.773Z",
-      "status": "Cancelled",
+      "status": "Delivered",
       "customer": {
         "name": "AHMAD",
         "email": "darmuhammadabubakar9@gmail.com",
@@ -573,7 +573,7 @@
     {
       "id": "ORD-17235",
       "createdAt": "2026-10-22T20:05:48.421Z",
-      "status": "Pending",
+      "status": "Delivered",
       "customer": {
         "name": "MUHAMMAD ABUBAKAR DAR",
         "email": "darmuhammadabubakar9@gmail.com",
@@ -613,7 +613,7 @@
     {
       "id": "ORD-67792",
       "createdAt": "2026-10-22T19:41:42.278Z",
-      "status": "Pending",
+      "status": "Delivered",
       "customer": {
         "name": "MUHAMMAD ABUBAKAR DAR",
         "email": "darmuhammadabubakar9@gmail.com",
@@ -653,7 +653,7 @@
     {
       "id": "ORD-86385",
       "createdAt": "2026-10-22T19:22:05.094Z",
-      "status": "Pending",
+      "status": "Delivered",
       "customer": {
         "name": "Muhammad Abubakar",
         "email": "darmuhammadabubakar9@gmail.com",
@@ -686,7 +686,7 @@
     {
       "id": "ORD-57518",
       "createdAt": "2026-10-22T18:19:02.045Z",
-      "status": "Pending",
+      "status": "Delivered",
       "customer": {
         "name": "Asad Malik",
         "phone": "03219876543",
@@ -717,7 +717,7 @@
     {
       "id": "ORD-67038",
       "createdAt": "2026-10-22T18:14:33.998Z",
-      "status": "Pending",
+      "status": "Delivered",
       "customer": {
         "name": "MUHAMMAD ABUBAKAR DAR",
         "email": "darmuhammadabubakar9@gmail.com",
@@ -757,7 +757,7 @@
     {
       "id": "ORD-63630",
       "createdAt": "2026-10-21T18:38:18.571Z",
-      "status": "Pending",
+      "status": "Delivered",
       "customer": {
         "name": "Zainab Khan",
         "phone": "03001234567",
@@ -818,7 +818,7 @@
       "shippingFee": 0,
       "total": 6100,
       "paymentMethod": "Cash on Delivery (COD)",
-      "status": "Confirmed",
+      "status": "Delivered",
       "notes": "Call before delivery"
     },
     {
@@ -850,17 +850,38 @@
       "shippingFee": 0,
       "total": 5200,
       "paymentMethod": "Credit / Debit Card (Online)",
-      "status": "Shipped",
+      "status": "Delivered",
       "trackingNumber": "TCS-9928172635"
     }
   ],
   "analytics": {
-    "pageViews": 1552,
+    "pageViews": 1554,
     "tryOnSessions": 401,
     "addToCartCount": 224,
     "ordersCompleted": 14
   },
   "automationLogs": [
+    {
+      "id": "log-1792966751080",
+      "timestamp": "2026-10-25T22:19:11.080Z",
+      "type": "system",
+      "status": "Success",
+      "message": "Partner Admin verified & approved by Main Admin: ARIF MAHMOOD DAR (TARIQ OPTICAL SERVICE)",
+      "payload": null
+    },
+    {
+      "id": "log-1792966733286",
+      "timestamp": "2026-10-25T22:18:53.286Z",
+      "type": "system",
+      "status": "Pending",
+      "message": "New Partner Admin registration request: ARIF MAHMOOD DAR (TARIQ OPTICAL SERVICE, Lahore) - Awaiting Main Admin Verification",
+      "payload": {
+        "username": "arifdar",
+        "email": "qwert@gmail.com",
+        "phone": "+92 3464122890",
+        "storeName": "TARIQ OPTICAL SERVICE"
+      }
+    },
     {
       "id": "log-1792753835650",
       "timestamp": "2026-10-23T11:10:35.650Z",
@@ -1081,5 +1102,24 @@
       "createdAt": "2026-10-25T18:39:26.944Z"
     }
   ],
-  "partnerAdmins": []
+  "partnerAdmins": [
+    {
+      "id": "padmin-1792966733283",
+      "name": "ARIF MAHMOOD DAR",
+      "username": "arifdar",
+      "email": "qwert@gmail.com",
+      "phone": "+92 3464122890",
+      "storeName": "TARIQ OPTICAL SERVICE",
+      "city": "Lahore",
+      "address": "NEAR ADDA KOT ABDUL MALIK SHARQPUR BAZAR SHEIKHUPURA ROAD",
+      "role": "partner_admin",
+      "status": "verified",
+      "notes": "",
+      "rejectionReason": null,
+      "createdAt": "2026-10-25T22:18:53.284Z",
+      "verifiedAt": "2026-10-25T22:19:11.078Z",
+      "verifiedBy": "admin",
+      "passwordHash": "$2b$10$PfijiCvX6MOrnir2iyNk4.fn1KXBl63DxCgRZdqdDWFiBeMp6aeBq"
+    }
+  ]
 }
