@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-gold: #d4af37;
+    --color-gold-dark: #aa820a;
+    --color-luxury-bg: #ffffff;
+    --color-luxury-card: #fafafa;
+    --color-luxury-text: #09090b;
+  }
+
+  body {
+    background-color: #ffffff;
+    color: #09090b;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Accessible focus ring - Checklist #10 & #11 */
+  *:focus-visible {
+    outline: 2px solid #d4af37;
+    outline-offset: 2px;
+  }
+}
+
+/* Glassmorphism & luxury accents */
+.luxury-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.luxury-glass-dark {
+  background: rgba(9, 9, 11, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Gold shimmer effect */
+.gold-shimmer {
+  background: linear-gradient(135deg, #d4af37 0%, #fdf5d6 50%, #c59b27 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom sleek scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f4f4f5;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1aa;
+}
+
+/* AR Viewport glow */
+.ar-glow {
+  box-shadow: 0 0 35px rgba(212, 175, 55, 0.25);
+}
