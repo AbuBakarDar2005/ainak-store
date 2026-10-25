@@ -378,7 +378,9 @@ class Database {
         const parsed = JSON.parse(raw);
         parsed.settings = { ...INITIAL_SETTINGS, ...(parsed.settings || {}) };
         parsed.partnerStores = (parsed.partnerStores && parsed.partnerStores.length > 0) ? parsed.partnerStores : INITIAL_PARTNER_STORES;
-        parsed.partnerAdmins = (parsed.partnerAdmins && parsed.partnerAdmins.length > 0) ? parsed.partnerAdmins : this.getInitialPartnerAdmins();
+        parsed.partnerAdmins = (parsed.partnerAdmins || []).filter(
+          pa => pa.username !== 'dr_kamran' && pa.username !== 'optician_tariq'
+        );
         parsed.automationLogs = parsed.automationLogs || [
           {
             id: 'log-init',
@@ -400,7 +402,7 @@ class Database {
         username: "admin",
         passwordHash: defaultAdminHash
       },
-      partnerAdmins: this.getInitialPartnerAdmins(),
+      partnerAdmins: [],
       settings: INITIAL_SETTINGS,
       products: INITIAL_PRODUCTS,
       partnerStores: INITIAL_PARTNER_STORES,
@@ -417,45 +419,7 @@ class Database {
   }
 
   getInitialPartnerAdmins() {
-    const defaultPartnerHash = bcrypt.hashSync("partner123456", 10);
-    return [
-      {
-        id: "padmin-1",
-        name: "Dr. Kamran Malik",
-        username: "dr_kamran",
-        email: "kamran@visioncraft.pk",
-        phone: "+92 300 4829102",
-        storeName: "Vision Craft Optics & Eye Clinic",
-        city: "Lahore",
-        address: "Shop 28, Fortress Stadium Commercial, Lahore Cantt",
-        role: "partner_admin",
-        status: "pending",
-        passwordHash: defaultPartnerHash,
-        notes: "Authorized Optician License #LHR-4912. Registered partner clinic requesting admin access for prescription order tracking and lens inventory.",
-        rejectionReason: null,
-        createdAt: new Date(Date.now() - 3600000 * 5).toISOString(),
-        verifiedAt: null,
-        verifiedBy: null
-      },
-      {
-        id: "padmin-2",
-        name: "Tariq Mehmood",
-        username: "optician_tariq",
-        email: "tariq@almadinaoptics.pk",
-        phone: "+92 321 9458231",
-        storeName: "Al-Madina Optics DHA",
-        city: "Lahore",
-        address: "Plaza 24, Y-Block Commercial Area, DHA Phase 3, Lahore",
-        role: "partner_admin",
-        status: "verified",
-        passwordHash: defaultPartnerHash,
-        notes: "Official Partner Store branch manager. Approved by Main Admin.",
-        rejectionReason: null,
-        createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-        verifiedAt: new Date(Date.now() - 86400000 * 1).toISOString(),
-        verifiedBy: "admin"
-      }
-    ];
+    return [];
   }
 
   saveData(dataToSave) {

@@ -839,38 +839,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
           {/* TAB 1: SIGN IN (Main Admin & Verified Partner Admins) */}
           {authMode === 'login' && (
             <div>
-              {/* Quick Preset Credentials Chip Bar for Testing */}
-              <div className="mb-5 p-2.5 bg-luxury-50 border border-luxury-200 rounded-xl text-[11px]">
-                <span className="text-[10px] font-bold text-luxury-400 uppercase tracking-wider block mb-1.5">
-                  ⚡ Quick Test Profiles:
+              {/* Quick Admin Access */}
+              <div className="mb-5 p-2.5 bg-luxury-50 border border-luxury-200 rounded-xl text-[11px] flex items-center justify-between">
+                <span className="text-[10px] font-bold text-luxury-500 uppercase tracking-wider flex items-center gap-1">
+                  👑 Main SuperAdmin:
                 </span>
-                <div className="flex flex-wrap gap-1.5">
-                  <button
-                    type="button"
-                    onClick={() => { setUsername('admin'); setPassword('admin123456'); setLoginError(null); }}
-                    className="px-2.5 py-1 bg-white hover:bg-luxury-950 hover:text-white border border-luxury-200 text-luxury-800 rounded-lg font-medium transition-colors flex items-center gap-1 shadow-2xs"
-                  >
-                    <span>👑 Main Admin</span>
-                    <span className="text-[9px] opacity-60">(Full Access)</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => { setUsername('dr_kamran'); setPassword('partner123456'); setLoginError(null); }}
-                    className="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 rounded-lg font-medium transition-colors flex items-center gap-1 shadow-2xs"
-                    title="Click to test what happens when an unverified partner admin attempts to log in"
-                  >
-                    <span>⏳ Pending Partner</span>
-                    <span className="text-[9px] text-amber-700">(dr_kamran)</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => { setUsername('optician_tariq'); setPassword('partner123456'); setLoginError(null); }}
-                    className="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 rounded-lg font-medium transition-colors flex items-center gap-1 shadow-2xs"
-                  >
-                    <span>🛡️ Verified Partner</span>
-                    <span className="text-[9px] text-emerald-700">(optician_tariq)</span>
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => { setUsername('admin'); setPassword('admin123456'); setLoginError(null); }}
+                  className="px-2.5 py-1 bg-white hover:bg-luxury-950 hover:text-white border border-luxury-200 text-luxury-800 rounded-lg font-medium transition-colors text-xs flex items-center gap-1 shadow-2xs"
+                >
+                  <span>Auto-fill Admin</span>
+                  <span className="text-[10px] opacity-60 font-mono">(admin)</span>
+                </button>
               </div>
 
               {/* Login Error / Pending Verification Notification */}
@@ -894,7 +875,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
                     <span>{loginError}</span>
                     {loginError.toLowerCase().includes('pending') && (
                       <p className="mt-1 text-[11px] text-amber-700 font-medium">
-                        💡 Tip for testing: Log in with the <strong>Main Admin</strong> profile (admin / admin123456) to review, verify, and approve pending partner admin accounts!
+                        Please contact the <strong>Main Store Administrator</strong> to review and approve your account.
                       </p>
                     )}
                   </div>
