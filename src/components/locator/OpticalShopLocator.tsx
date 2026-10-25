@@ -54,18 +54,21 @@ export const OpticalShopLocator: React.FC<OpticalShopLocatorProps> = ({
   const [allShops, setAllShops] = useState<OpticalShop[]>(OPTICAL_SHOPS);
   const [isLoadingStores, setIsLoadingStores] = useState(false);
 
-  // Fetch partner stores added via Admin Page
+  // Fetch partner stores added via Admin Page (Strictly Admin-Added Only)
   useEffect(() => {
     setIsLoadingStores(true);
     fetch('/api/partner-stores')
       .then(res => res.json())
       .then(data => {
-        if (data.stores && Array.isArray(data.stores) && data.stores.length > 0) {
-          setAllShops(data.stores);
+        if (data.stores && Array.isArray(data.stores)) {
+          setAllShops(data.stores.filter((s: any) => s.isAdminAdded === true));
+        } else {
+          setAllShops([]);
         }
       })
       .catch(err => {
-        console.warn('Using default partner stores dataset:', err);
+        console.warn('Could not load stores:', err);
+        setAllShops([]);
       })
       .finally(() => {
         setIsLoadingStores(false);

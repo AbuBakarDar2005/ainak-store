@@ -209,11 +209,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
         setAutomationLogs(autoData.logs || []);
       }
 
-      // 6. Partner Stores
+      // 6. Partner Stores (Strictly Admin-Added Only)
       const storesRes = await fetch('/api/partner-stores');
       if (storesRes.ok) {
         const storesData = await storesRes.json();
-        setPartnerStores(storesData.stores || []);
+        const validStores = (storesData.stores || []).filter((s: any) => s.isAdminAdded === true);
+        setPartnerStores(validStores);
       }
 
       // 7. Partner Admins (SuperAdmin only)
@@ -1272,7 +1273,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
               : 'border-transparent text-luxury-500 hover:text-luxury-950'
           }`}
         >
-          <MapPin className="w-4 h-4 text-gold" /> Partner Stores ({partnerStores.length})
+          <MapPin className="w-4 h-4 text-gold" /> Store Locations ({partnerStores.filter(s => s.isAdminAdded === true).length})
         </button>
 
         {/* Partner Admins Management (Main Admin Only) */}
@@ -1677,17 +1678,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <h3 className="font-serif font-bold text-lg text-luxury-950 flex items-center gap-2">
-                    <MapPin className="w-5 h-5 text-gold" /> Authorized Partner Stores & Clinics
+                    <MapPin className="w-5 h-5 text-gold" /> Store Locations (Admin Managed Only)
                   </h3>
                   <p className="text-xs text-luxury-500">
-                    Stores added here are instantly indexed and searchable through the storefront <strong>Location Bar</strong> on the live map.
+                    Only store locations directly added by the Administrator are displayed across the storefront and on the live map. Zero random stores.
                   </p>
                 </div>
                 <button
                   onClick={handleOpenAddPartnerStore}
                   className="px-4 py-2 bg-luxury-950 hover:bg-luxury-800 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors shadow-sm shrink-0"
                 >
-                  <Plus className="w-4 h-4 text-gold" /> Add Partner Store
+                  <Plus className="w-4 h-4 text-gold" /> Add Store Location
                 </button>
               </div>
 
@@ -1723,6 +1724,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
                   </thead>
                   <tbody className="divide-y divide-luxury-100">
                     {partnerStores
+                      .filter(s => s.isAdminAdded === true)
                       .filter(s => {
                         if (!partnerStoreSearch.trim()) return true;
                         const q = partnerStoreSearch.toLowerCase();
@@ -1812,6 +1814,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
                           </td>
                         </tr>
                       ))}
+
+                    {partnerStores.filter(s => s.isAdminAdded === true).length === 0 && (
+                      <tr>
+                        <td colSpan={6} className="p-8 text-center text-luxury-400">
+                          No store locations added yet. Click "+ Add Store Location" above to add your physical store address and map coordinates.
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>

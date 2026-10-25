@@ -767,9 +767,9 @@ class Database {
     return [headers.join(','), ...rows].join('\n');
   }
 
-  // --- Partner Stores (Added & Managed through Admin Portal) ---
+  // --- Partner Stores (Strictly Admin-Added Only) ---
   getPartnerStores(query = {}) {
-    let stores = this.data.partnerStores || [];
+    let stores = (this.data.partnerStores || []).filter(s => s.isAdminAdded === true);
     const { city, search } = query;
     if (city && city !== 'All') {
       stores = stores.filter(s => s.city.toLowerCase() === String(city).toLowerCase());
@@ -787,7 +787,7 @@ class Database {
   }
 
   getPartnerStoreById(id) {
-    return (this.data.partnerStores || []).find(s => s.id === id);
+    return (this.data.partnerStores || []).filter(s => s.isAdminAdded === true).find(s => s.id === id);
   }
 
   addPartnerStore(storeData) {
