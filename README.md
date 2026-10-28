@@ -72,7 +72,7 @@ An end-to-end, high-performance, minimalist eyewear web application inspired by 
 
 ### 6. Admin Control Dashboard (`/admin`)
 - **JWT & Bcrypt Security**: Protected portal with session management.
-- **Credentials**: `admin` / `admin123456`
+- **Credentials**: Main Admin Username: `darmuhammadabubakar9` / Password: `butt12345@`
 - **Live KPI Analytics**: Total Revenue, Total Orders, Catalog Inventory Count, AR Try-On Sessions, and Low-Stock Warnings.
 - **Product Management (CRUD)**: Add, edit, and delete frames with dimensions, try-on calibrations, and pricing.
 - **Order Management**: Update status (*Pending, Confirmed, Shipped, Delivered, Cancelled*), review doctor prescriptions, and issue courier tracking numbers.
@@ -119,7 +119,7 @@ npm run dev
 ```
 - **Storefront & Client**: [http://localhost:3000](http://localhost:3000)
 - **Backend Express API**: [http://localhost:5000](http://localhost:5000)
-- **Admin Control Dashboard**: [http://localhost:3000/admin](http://localhost:3000/admin) *(Username: `admin` | Password: `admin123456`)*
+- **Admin Control Dashboard**: [http://localhost:3000/admin](http://localhost:3000/admin) *(Username: `darmuhammadabubakar9` | Password: `butt12345@`)*
 
 ### 3. Production Build Validation
 ```bash

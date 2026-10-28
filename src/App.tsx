@@ -16,12 +16,13 @@ import { StoreLocatorTeaser } from './components/home/StoreLocatorTeaser';
 import { Footer } from './components/layout/Footer';
 import { CookieConsent } from './components/common/CookieConsent';
 import { WhatsAppConcierge } from './components/common/WhatsAppConcierge';
-import { Product, CartItem, ColorVariant, LensOption, Order, StoreSettings } from './types';
+import { Product, CartItem, ColorVariant, LensOption, Order, StoreSettings, LensCategory } from './types';
 import { DEFAULT_PRODUCTS } from './data/defaultProducts';
 import { trackEvent } from './utils/analytics';
 
 export function App() {
   const [products, setProducts] = useState<Product[]>(DEFAULT_PRODUCTS);
+  const [lensCategories, setLensCategories] = useState<LensCategory[]>([]);
   const [settings, setSettings] = useState<StoreSettings | null>({
     storeName: "NEXT VISION",
     tagline: "Pakistan's Premier Eyewear Destination",
@@ -50,6 +51,7 @@ export function App() {
 
   // Routing State: 'store' | 'admin' | 'privacy' | 'terms' | '404' | 'locator'
   const [currentView, setCurrentView] = useState<'store' | 'admin' | 'privacy' | 'terms' | '404' | 'locator'>('store');
+  const [adminAuthMode, setAdminAuthMode] = useState<'login' | 'register'>('login');
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [currency, setCurrency] = useState<'PKR' | 'USD'>('PKR');
 
@@ -96,6 +98,14 @@ export function App() {
         }
       })
       .catch(err => console.warn("Failed to load store settings:", err));
+
+    // Fetch lens categories
+    fetch('/api/lens-types')
+      .then(res => res.json())
+      .then(data => {
+        if (data.categories) setLensCategories(data.categories);
+      })
+      .catch(err => console.warn("Failed to load lens categories:", err));
 
     // Check URL path for deep routing
     const path = window.location.pathname;
@@ -172,6 +182,16 @@ export function App() {
 
   const exchangeRate = settings?.usdExchangeRate || 0.0036;
 
+  const handleOpenAdminLogin = () => {
+    setAdminAuthMode('login');
+    setCurrentView('admin');
+  };
+
+  const handleOpenPartnerRequest = () => {
+    setAdminAuthMode('register');
+    setCurrentView('admin');
+  };
+
   // View: Admin Portal
   if (currentView === 'admin') {
     return (
@@ -179,6 +199,7 @@ export function App() {
         onExit={() => setCurrentView('store')}
         currency={currency}
         exchangeRate={exchangeRate}
+        initialAuthMode={adminAuthMode}
       />
     );
   }
@@ -198,7 +219,8 @@ export function App() {
           setCurrentView('store');
         }}
         activeCategory={activeCategory}
-        onOpenAdmin={() => setCurrentView('admin')}
+        onOpenAdmin={handleOpenAdminLogin}
+        onOpenPartnerRequest={handleOpenPartnerRequest}
         onSearch={handleSearch}
         settings={settings}
       />
@@ -233,6 +255,7 @@ export function App() {
           <OpticalShopLocator
             onBackToStore={() => setCurrentView('store')}
             onOpenTryOn={() => handleLaunchTryOn()}
+            onOpenPartnerRequest={handleOpenPartnerRequest}
           />
         )}
 
@@ -262,7 +285,8 @@ export function App() {
         }}
         onOpenTryOn={() => handleLaunchTryOn()}
         onOpenLocator={() => setCurrentView('locator')}
-        onOpenAdmin={() => setCurrentView('admin')}
+        onOpenAdmin={handleOpenAdminLogin}
+        onOpenPartnerRequest={handleOpenPartnerRequest}
         settings={settings}
       />
 
@@ -291,6 +315,7 @@ export function App() {
           selectedColor={prescriptionColor}
           currency={currency}
           exchangeRate={exchangeRate}
+          lensCategories={lensCategories}
           onConfirmAndAddToCart={(prod, col, lens) => {
             handleAddToCart(prod, col, lens);
           }}

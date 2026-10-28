@@ -9,6 +9,7 @@ interface FooterProps {
   onOpenTryOn: () => void;
   onOpenLocator?: () => void;
   onOpenAdmin: () => void;
+  onOpenPartnerRequest?: () => void;
   settings?: StoreSettings | null;
 }
 
@@ -19,6 +20,7 @@ export const Footer: React.FC<FooterProps> = ({
   onOpenTryOn,
   onOpenLocator,
   onOpenAdmin,
+  onOpenPartnerRequest,
   settings
 }) => {
   const currentYear = new Date().getFullYear();
@@ -30,7 +32,7 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Core Pillars Banner */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-12 border-b border-white/10 text-xs">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-champagne-500/10 border border-champagne-500/30 text-gold flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-white flex items-center justify-center shrink-0">
               <Truck className="w-5 h-5" />
             </div>
             <div>
@@ -40,7 +42,7 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-champagne-500/10 border border-champagne-500/30 text-gold flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-white flex items-center justify-center shrink-0">
               <RotateCcw className="w-5 h-5" />
             </div>
             <div>
@@ -50,7 +52,7 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-champagne-500/10 border border-champagne-500/30 text-gold flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-white flex items-center justify-center shrink-0">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
@@ -70,7 +72,7 @@ export const Footer: React.FC<FooterProps> = ({
                 N
               </div>
               <span className="font-serif text-xl font-bold tracking-tight">
-                NEXT <span className="text-champagne-500 font-sans text-sm font-light">VISION</span>
+                NEXT <span className="text-zinc-400 font-sans text-sm font-light">VISION</span>
               </span>
             </div>
             <p className="text-luxury-400 text-xs leading-relaxed max-w-sm">
@@ -78,11 +80,11 @@ export const Footer: React.FC<FooterProps> = ({
             </p>
             <div className="space-y-1.5 text-luxury-300">
               <p className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-gold shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-zinc-400 shrink-0 mt-0.5" />
                 <span>{settings?.address || 'Shop 14, Luxury Promenade, MM Alam Road, Gulberg III, Lahore, Pakistan'}</span>
               </p>
               <p className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-gold shrink-0" />
+                <Phone className="w-4 h-4 text-zinc-400 shrink-0" />
                 <span>{settings?.phone || '+92 42 35789012'} (10 AM - 9 PM PKT)</span>
               </p>
               <p className="flex items-center gap-2">
@@ -131,14 +133,14 @@ export const Footer: React.FC<FooterProps> = ({
             <h5 className="font-bold uppercase tracking-wider text-white text-[11px]">Experience</h5>
             <ul className="space-y-2 text-luxury-400">
               <li>
-                <button onClick={onOpenTryOn} className="hover:text-gold transition-colors flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-gold" /> Launch AR Try-On
+                <button onClick={onOpenTryOn} className="hover:text-white transition-colors flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-zinc-300" /> Launch AR Try-On
                 </button>
               </li>
               {onOpenLocator && (
                 <li>
-                  <button onClick={onOpenLocator} className="hover:text-champagne-400 text-gold transition-colors flex items-center gap-1.5 font-medium">
-                    <MapPin className="w-3.5 h-3.5 text-champagne-400" /> Find Optical Stores (Map)
+                  <button onClick={onOpenLocator} className="hover:text-white text-zinc-300 transition-colors flex items-center gap-1.5 font-medium">
+                    <MapPin className="w-3.5 h-3.5 text-zinc-300" /> Find Optical Stores (Map)
                   </button>
                 </li>
               )}
@@ -169,10 +171,18 @@ export const Footer: React.FC<FooterProps> = ({
                 </button>
               </li>
               <li>
-                <button onClick={onOpenAdmin} className="hover:text-gold transition-colors">
+                <button onClick={onOpenAdmin} className="hover:text-white transition-colors">
                   Admin Control Portal
                 </button>
               </li>
+              {onOpenPartnerRequest && (
+                <li>
+                  <button onClick={onOpenPartnerRequest} className="hover:text-white text-zinc-300 transition-colors flex items-center gap-1.5 font-medium">
+                    <span>Admin Partner Request</span>
+                    <span className="text-[9px] bg-white/10 text-zinc-200 border border-white/20 px-1.5 py-0.5 rounded font-bold">Apply</span>
+                  </button>
+                </li>
+              )}
               <li>
                 <a href="/sitemap.xml" target="_blank" className="hover:text-white transition-colors">
                   Sitemap (XML)

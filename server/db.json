@@ -1,7 +1,7 @@
 {
   "admin": {
-    "username": "admin",
-    "passwordHash": "$2b$10$I6AT7//FiqN9.ZXRW2ixCenNPE04voaA8LAUPa/OTi9fuYULJCArC"
+    "username": "darmuhammadabubakar9",
+    "passwordHash": "$2b$10$V5a/nxHh0JPAb3zSiLt8zumjdz.UFvOqLYl.htUE0yoAqjHH7.fNW"
   },
   "settings": {
     "storeName": "NEXT VISION",
@@ -461,7 +461,8 @@
       "shippingFee": 0,
       "total": 21800,
       "paymentMethod": "Cash on Delivery (COD)",
-      "notes": ""
+      "notes": "",
+      "trackingNumber": "123"
     },
     {
       "id": "ORD-54282",
@@ -855,12 +856,153 @@
     }
   ],
   "analytics": {
-    "pageViews": 1558,
-    "tryOnSessions": 401,
+    "pageViews": 1631,
+    "tryOnSessions": 403,
     "addToCartCount": 224,
     "ordersCompleted": 14
   },
   "automationLogs": [
+    {
+      "id": "log-1793092194782",
+      "timestamp": "2026-10-27T09:09:54.783Z",
+      "type": "eyesight_booking",
+      "status": "Success",
+      "message": "New Eyesight Booking: ANS booked at \"Tariq Vision Center\" (Lahore) for 2026-10-30 at 02:00 PM",
+      "payload": {
+        "id": "EB-19477296",
+        "customerName": "ANS",
+        "customerPhone": "12345678",
+        "customerEmail": "",
+        "date": "2026-10-30",
+        "time": "02:00 PM",
+        "shopId": "store-1793047419124",
+        "shopName": "Tariq Vision Center",
+        "shopCity": "Lahore",
+        "shopAddress": "DHA Phase 5, Lahore",
+        "services": [
+          "Automated Computerized Refraction Eye Test",
+          "Visual Acuity & Astigmatism Assessment",
+          "Pupil Distance (PD) Measurement & Frame Fitting"
+        ],
+        "status": "Confirmed",
+        "notes": "Booked via Store Locator",
+        "createdAt": "2026-10-27T09:09:54.773Z"
+      }
+    },
+    {
+      "id": "log-1793053890780",
+      "timestamp": "2026-10-26T22:31:30.780Z",
+      "type": "eyesight_booking",
+      "status": "Success",
+      "message": "New Eyesight Booking: ali booked at \"TARIQ OPTICAL SERVICE\" (Lahore) for 2026-10-29 at 02:00 PM",
+      "payload": {
+        "id": "EB-89077329",
+        "customerName": "ali",
+        "customerPhone": "123456",
+        "customerEmail": "",
+        "date": "2026-10-29",
+        "time": "02:00 PM",
+        "shopId": "store-1792953566942",
+        "shopName": "TARIQ OPTICAL SERVICE",
+        "shopCity": "Lahore",
+        "shopAddress": "GT ROAD SHAHDRA LAHORE",
+        "services": [
+          "Automated Computerized Refraction Eye Test",
+          "Visual Acuity & Astigmatism Assessment",
+          "Pupil Distance (PD) Measurement & Frame Fitting"
+        ],
+        "status": "Confirmed",
+        "notes": "Booked via Store Locator",
+        "createdAt": "2026-10-26T22:31:30.773Z"
+      }
+    },
+    {
+      "id": "log-1793053424138",
+      "timestamp": "2026-10-26T22:23:44.138Z",
+      "type": "eyesight_booking",
+      "status": "Status Updated",
+      "message": "Booking EB-10605477 for \"Muhammad Hamza\" at \"TARIQ OPTICAL SERVICE\" marked as Completed",
+      "payload": null
+    },
+    {
+      "id": "log-1793053106055",
+      "timestamp": "2026-10-26T22:18:26.055Z",
+      "type": "eyesight_booking",
+      "status": "Success",
+      "message": "New Eyesight Booking: Muhammad Hamza booked at \"TARIQ OPTICAL SERVICE\" (Lahore) for 2026-10-31 at 04:00 PM",
+      "payload": {
+        "id": "EB-10605477",
+        "customerName": "Muhammad Hamza",
+        "customerPhone": "+92 300 7654321",
+        "customerEmail": "hamza@example.com",
+        "date": "2026-10-31",
+        "time": "04:00 PM",
+        "shopId": "shop_lahore_1",
+        "shopName": "TARIQ OPTICAL SERVICE",
+        "shopCity": "Lahore",
+        "shopAddress": "Main Market, Gulberg II, Lahore",
+        "services": [
+          "Free Computerized Eye Exam",
+          "Same-Day Lens Fitting"
+        ],
+        "status": "Confirmed",
+        "notes": "Please check high astigmatism power",
+        "createdAt": "2026-10-26T22:18:26.054Z"
+      }
+    },
+    {
+      "id": "log-1793047999850",
+      "timestamp": "2026-10-26T20:53:19.850Z",
+      "type": "system",
+      "status": "Pending",
+      "message": "Partner Admin account deleted by Main Admin: ID padmin-1793047999724",
+      "payload": null
+    },
+    {
+      "id": "log-1793047999726",
+      "timestamp": "2026-10-26T20:53:19.726Z",
+      "type": "system",
+      "status": "Success",
+      "message": "Partner Admin account manually created by Main Admin: Dr. Tariq Optical Clinic (Tariq Vision Center) - Status: verified",
+      "payload": null
+    },
+    {
+      "id": "log-1793047419211",
+      "timestamp": "2026-10-26T20:43:39.211Z",
+      "type": "system",
+      "status": "Pending",
+      "message": "Partner Admin account deleted by Main Admin: ID padmin-1793047419124",
+      "payload": null
+    },
+    {
+      "id": "log-1793047419126",
+      "timestamp": "2026-10-26T20:43:39.126Z",
+      "type": "system",
+      "status": "Success",
+      "message": "Partner Admin account manually created by Main Admin: Dr. Tariq Optical Clinic (Tariq Vision Center) - Status: verified",
+      "payload": null
+    },
+    {
+      "id": "log-1793045768700",
+      "timestamp": "2026-10-26T20:16:08.700Z",
+      "type": "system",
+      "status": "Success",
+      "message": "Partner Admin verified & approved by Main Admin: MUHAMMAD ABUBAKAR DAR (admin)",
+      "payload": null
+    },
+    {
+      "id": "log-1793045495401",
+      "timestamp": "2026-10-26T20:11:35.401Z",
+      "type": "system",
+      "status": "Pending",
+      "message": "New Partner Admin registration request: MUHAMMAD ABUBAKAR DAR (admin, Lahore) - Awaiting Main Admin Verification",
+      "payload": {
+        "username": "admin1",
+        "email": "darmuhammadabubakar9@gmail.com",
+        "phone": "+923054323059",
+        "storeName": "admin"
+      }
+    },
     {
       "id": "log-1792966751080",
       "timestamp": "2026-10-25T22:19:11.080Z",
@@ -1076,6 +1218,32 @@
   ],
   "partnerStores": [
     {
+      "id": "store-1793047419124",
+      "name": "Tariq Vision Center",
+      "type": "Authorized Partner",
+      "address": "DHA Phase 5, Lahore",
+      "city": "Lahore",
+      "province": "Punjab",
+      "phone": "+92 300 1234567",
+      "whatsapp": "+92 300 1234567",
+      "timings": "10:00 AM - 10:00 PM (Daily)",
+      "lat": 31.5204,
+      "lng": 74.3587,
+      "rating": 4.8,
+      "reviewsCount": 1,
+      "image": "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?auto=format&fit=crop&w=600&q=80",
+      "services": [
+        "Computerized Eye Exam",
+        "Same-Day Lens Fitting"
+      ],
+      "hasFreeEyeTest": true,
+      "hasTryOnKiosk": true,
+      "hasSameDayLenses": true,
+      "isOpenNow": true,
+      "isAdminAdded": true,
+      "createdAt": "2026-10-26T20:43:39.124Z"
+    },
+    {
       "id": "store-1792953566942",
       "name": "TARIQ OPTICAL SERVICE",
       "type": "Authorized Partner",
@@ -1104,6 +1272,24 @@
   ],
   "partnerAdmins": [
     {
+      "id": "padmin-1793045495398",
+      "name": "MUHAMMAD ABUBAKAR DAR",
+      "username": "admin1",
+      "email": "darmuhammadabubakar9@gmail.com",
+      "phone": "+923054323059",
+      "storeName": "admin",
+      "city": "Lahore",
+      "address": "MUHALLA DHAKA DERA KASHMIRIAN KOT ABDUL MALIK TEHSIL FEROZWALA DISTRICT SHEIKHUPURA",
+      "role": "partner_admin",
+      "status": "verified",
+      "notes": "",
+      "rejectionReason": null,
+      "createdAt": "2026-10-26T20:11:35.398Z",
+      "verifiedAt": "2026-10-26T20:16:08.695Z",
+      "verifiedBy": "darmuhammadabubakar9",
+      "passwordHash": "$2b$10$zV7uO0eFSpWGDW/jHrNWvueIdH1nuaDDmLZU77kqkKLr66yugEZU."
+    },
+    {
       "id": "padmin-1792966733283",
       "name": "ARIF MAHMOOD DAR",
       "username": "arifdar",
@@ -1119,7 +1305,229 @@
       "createdAt": "2026-10-25T22:18:53.284Z",
       "verifiedAt": "2026-10-25T22:19:11.078Z",
       "verifiedBy": "admin",
-      "passwordHash": "$2b$10$PfijiCvX6MOrnir2iyNk4.fn1KXBl63DxCgRZdqdDWFiBeMp6aeBq"
+      "passwordHash": "$2b$10$Y8X6iZgl.nYuOfcjCL6SyejbFJ0jh7wZGhz6uI6jG83gXxtT/ElPa"
+    }
+  ],
+  "lensCategories": [
+    {
+      "id": "lens-blue-cut",
+      "name": "Blue Light Shield (Mobile & Laptop Defense)",
+      "categoryKey": "blue_light",
+      "description": "Engineered specifically for heavy smartphone, laptop & screen usage. Blocks 99% harmful blue-violet light, eliminates digital eye strain and prevents sleep cycle disruption.",
+      "price": 1800,
+      "features": [
+        "99% Screen Blue Light Shielding",
+        "Anti-Digital Fatigue Nano-Filter",
+        "High Optical Clarity (Abbe 58)",
+        "Zero Yellow Color Distortion"
+      ],
+      "badge": "Screen Essential",
+      "isActive": true
+    },
+    {
+      "id": "lens-photochromic",
+      "name": "Photochromic Transition (Sunlight React)",
+      "categoryKey": "photochromic",
+      "description": "Rapid light-adaptive smart optics that remain perfectly clear indoors and automatically transform into dark sunglasses (Black, Blue, Amber, Green) when exposed to sun or daylight.",
+      "price": 2800,
+      "features": [
+        "Fast 30-Second Outdoor Darkening",
+        "Full UV400 Sun Glare Protection",
+        "Choice of 5 Sun Transition Tints",
+        "100% Crystal Clear Indoors"
+      ],
+      "badge": "Sun Adaptive",
+      "supportsPhotochromicTints": true,
+      "availableTints": [
+        "Obsidian Black",
+        "Sapphire Blue",
+        "Amber Brown",
+        "Emerald Green",
+        "Graphite Grey"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "lens-anti-glare",
+      "name": "Anti-Glare + Blue-Cut Dual Shield",
+      "categoryKey": "anti_glare_blue_cut",
+      "description": "Multi-layer anti-reflective anti-glare coating combined with computer blue-cut shielding. Eliminates halo reflections from night driving headlights and computer monitors.",
+      "price": 2400,
+      "features": [
+        "16-Layer Anti-Reflective Anti-Glare",
+        "Dual-Band Blue Light Cut Coating",
+        "Hydrophobic Smudge & Dust Repellent",
+        "Night Driving & Office Glare Defense"
+      ],
+      "badge": "Anti-Reflective",
+      "isActive": true
+    },
+    {
+      "id": "lens-all-in-one",
+      "name": "Ultra-HD Master Defense (UV400 + Screen + Anti-Glare)",
+      "categoryKey": "all_in_one",
+      "description": "Medical-grade high-index resin offering comprehensive UV400 sun protection, mobile & laptop screen defense, and diamond-grade anti-glare. Configurable with or without photochromic sunlight ability.",
+      "price": 3600,
+      "features": [
+        "Comprehensive UV400 Sun Blocking",
+        "Mobile & Laptop Screen Protection",
+        "High-Index Ultra-Thin Lens Profile",
+        "Configurable with/without Photochromic",
+        "Diamond Hard Anti-Scratch Coat"
+      ],
+      "badge": "Master Grade",
+      "supportsPhotochromicToggle": true,
+      "photochromicAddonPrice": 1200,
+      "supportsPhotochromicTints": true,
+      "availableTints": [
+        "Obsidian Black",
+        "Sapphire Blue",
+        "Amber Brown"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "lens-smart-glasses",
+      "name": "Tri-Active Smart Lenses (Blue Cut + Photochromic + Anti-Glare)",
+      "categoryKey": "smart_glasses",
+      "description": "Next-generation all-inclusive smart lenses uniting Blue Cut screen filter, automatic Photochromic sunlight adaptation, and 360° Anti-Glare clarity in one intelligent optical formulation.",
+      "price": 4800,
+      "features": [
+        "Tri-Active Intelligent Optical Fusion",
+        "Active Blue-Cut Screen Nano-Shield",
+        "Automatic Sunlight Photochromic Shift",
+        "16-Layer Anti-Glare Clear Coating",
+        "Rapid Indoor-Outdoor Transition"
+      ],
+      "badge": "Smart Tri-Shield",
+      "supportsPhotochromicTints": true,
+      "availableTints": [
+        "Obsidian Black",
+        "Sapphire Blue",
+        "Graphite Grey",
+        "Ruby Amber"
+      ],
+      "isActive": true
+    }
+  ],
+  "eyesightBookings": [
+    {
+      "id": "EB-19477296",
+      "customerName": "ANS",
+      "customerPhone": "12345678",
+      "customerEmail": "",
+      "date": "2026-10-30",
+      "time": "02:00 PM",
+      "shopId": "store-1793047419124",
+      "shopName": "Tariq Vision Center",
+      "shopCity": "Lahore",
+      "shopAddress": "DHA Phase 5, Lahore",
+      "services": [
+        "Automated Computerized Refraction Eye Test",
+        "Visual Acuity & Astigmatism Assessment",
+        "Pupil Distance (PD) Measurement & Frame Fitting"
+      ],
+      "status": "Confirmed",
+      "notes": "Booked via Store Locator",
+      "createdAt": "2026-10-27T09:09:54.773Z"
+    },
+    {
+      "id": "EB-89077329",
+      "customerName": "ali",
+      "customerPhone": "123456",
+      "customerEmail": "",
+      "date": "2026-10-29",
+      "time": "02:00 PM",
+      "shopId": "store-1792953566942",
+      "shopName": "TARIQ OPTICAL SERVICE",
+      "shopCity": "Lahore",
+      "shopAddress": "GT ROAD SHAHDRA LAHORE",
+      "services": [
+        "Automated Computerized Refraction Eye Test",
+        "Visual Acuity & Astigmatism Assessment",
+        "Pupil Distance (PD) Measurement & Frame Fitting"
+      ],
+      "status": "Confirmed",
+      "notes": "Booked via Store Locator",
+      "createdAt": "2026-10-26T22:31:30.773Z"
+    },
+    {
+      "id": "EB-10605477",
+      "customerName": "Muhammad Hamza",
+      "customerPhone": "+92 300 7654321",
+      "customerEmail": "hamza@example.com",
+      "date": "2026-10-31",
+      "time": "04:00 PM",
+      "shopId": "shop_lahore_1",
+      "shopName": "TARIQ OPTICAL SERVICE",
+      "shopCity": "Lahore",
+      "shopAddress": "Main Market, Gulberg II, Lahore",
+      "services": [
+        "Free Computerized Eye Exam",
+        "Same-Day Lens Fitting"
+      ],
+      "status": "Completed",
+      "notes": "Eyesight exam completed with -1.50 DS prescription.",
+      "createdAt": "2026-10-26T22:18:26.054Z",
+      "updatedAt": "2026-10-26T22:23:44.137Z"
+    },
+    {
+      "id": "EB-982101",
+      "customerName": "Muhammad Usman",
+      "customerPhone": "+92 300 8492011",
+      "customerEmail": "usman.optical@example.com",
+      "date": "2026-10-28",
+      "time": "02:00 PM",
+      "shopId": "store-1792953566942",
+      "shopName": "TARIQ OPTICAL SERVICE",
+      "shopCity": "Lahore",
+      "shopAddress": "Main Market, Gulberg II, Lahore",
+      "services": [
+        "Automated Computerized Refraction Eye Test",
+        "Visual Acuity & Astigmatism Assessment",
+        "Pupil Distance (PD) Measurement & Frame Fitting"
+      ],
+      "status": "Confirmed",
+      "notes": "Patient requesting checkup for computer blue-light reading glasses.",
+      "createdAt": "2026-10-26T22:17:43.752Z"
+    },
+    {
+      "id": "EB-982102",
+      "customerName": "Ayesha Siddiqui",
+      "customerPhone": "+92 321 9988771",
+      "customerEmail": "ayesha.s@example.com",
+      "date": "2026-10-29",
+      "time": "04:00 PM",
+      "shopId": "store-1792953566942",
+      "shopName": "TARIQ OPTICAL SERVICE",
+      "shopCity": "Lahore",
+      "shopAddress": "Main Market, Gulberg II, Lahore",
+      "services": [
+        "Automated Computerized Refraction Eye Test",
+        "Cylinder & Axis Power Verification"
+      ],
+      "status": "Confirmed",
+      "notes": "Follow up appointment after previous eye check.",
+      "createdAt": "2026-10-26T17:17:43.752Z"
+    },
+    {
+      "id": "EB-982103",
+      "customerName": "Bilal Farooq",
+      "customerPhone": "+92 333 4455660",
+      "customerEmail": "bilal.farooq@example.com",
+      "date": "2026-10-30",
+      "time": "12:30 PM",
+      "shopId": "store-1793047419124",
+      "shopName": "Tariq Vision Center",
+      "shopCity": "Lahore",
+      "shopAddress": "DHA Phase 5 Commercial, Lahore",
+      "services": [
+        "Automated Computerized Refraction Eye Test",
+        "Comprehensive 3D Refraction Eye Test"
+      ],
+      "status": "Confirmed",
+      "notes": "Needs prescription verification for new titanium frames.",
+      "createdAt": "2026-10-26T10:17:43.752Z"
     }
   ]
 }

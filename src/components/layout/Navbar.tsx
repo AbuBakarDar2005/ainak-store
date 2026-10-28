@@ -12,6 +12,7 @@ interface NavbarProps {
   onSelectCategory: (cat: string) => void;
   activeCategory: string;
   onOpenAdmin: () => void;
+  onOpenPartnerRequest?: () => void;
   onSearch: (q: string) => void;
   settings?: StoreSettings | null;
 }
@@ -26,12 +27,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSelectCategory,
   activeCategory,
   onOpenAdmin,
+  onOpenPartnerRequest,
   onSearch,
   settings
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,12 +55,12 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Top Announcement Bar */}
       <div className="bg-luxury-950 text-white text-[11px] py-2 px-4 text-center tracking-wider font-medium flex items-center justify-between border-b border-white/5">
         <div className="hidden md:flex items-center gap-2 text-luxury-400">
-          <Phone className="w-3 h-3 text-gold" />
+          <Phone className="w-3 h-3 text-zinc-400" />
           <span>Concierge Helpline: <strong>{settings?.phone || '+92 42 35789012'}</strong></span>
         </div>
 
         <div className="mx-auto flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-champagne-500 animate-pulse"></span>
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
           <span>Complimentary Express Delivery Nationwide above Rs. 5,000 • 7-Day Replacements</span>
         </div>
 
@@ -66,10 +68,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onOpenLocator && (
             <button
               onClick={onOpenLocator}
-              className="flex items-center gap-1.5 text-champagne-400 hover:text-white transition-colors font-medium"
+              className="flex items-center gap-1.5 text-zinc-300 hover:text-white transition-colors font-medium"
               title="Locate nearby optical stores with free live map"
             >
-              <MapPin className="w-3 h-3 text-gold" />
+              <MapPin className="w-3 h-3 text-zinc-400" />
               <span>Find Optical Stores</span>
             </button>
           )}
@@ -80,13 +82,25 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="flex items-center gap-1 text-luxury-300 hover:text-white transition-colors"
             title="Toggle currency display"
           >
-            <Globe className="w-3 h-3 text-gold" />
+            <Globe className="w-3 h-3 text-zinc-400" />
             <span className="font-bold">{currency}</span>
           </button>
           <span className="text-luxury-700">|</span>
+          {onOpenPartnerRequest && (
+            <>
+              <button
+                onClick={onOpenPartnerRequest}
+                className="text-zinc-200 hover:text-white transition-colors flex items-center gap-1 font-semibold text-[10px] bg-white/10 hover:bg-white/15 px-2 py-0.5 rounded-full"
+                title="Apply for Partner Admin access"
+              >
+                <span>Partner Request</span>
+              </button>
+              <span className="text-luxury-700">|</span>
+            </>
+          )}
           <button
             onClick={onOpenAdmin}
-            className="text-luxury-400 hover:text-gold transition-colors flex items-center gap-1"
+            className="text-luxury-400 hover:text-white transition-colors flex items-center gap-1"
           >
             <Shield className="w-3 h-3" /> Admin
           </button>
@@ -116,11 +130,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <img src={settings.logoUrl} alt={settings.storeName || "NEXT VISION"} className="w-full h-full object-contain" />
                 </div>
               ) : (
-                <div className="w-10 h-10 rounded-xl bg-luxury-950 text-gold flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+                <div className="w-10 h-10 rounded-xl bg-luxury-950 text-white flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
                   <svg viewBox="0 0 64 64" className="w-6 h-6" fill="none">
-                    <rect x="8" y="24" width="20" height="16" rx="8" stroke="#d4af37" strokeWidth="3" fill="#18181b"/>
-                    <rect x="36" y="24" width="20" height="16" rx="8" stroke="#d4af37" strokeWidth="3" fill="#18181b"/>
-                    <path d="M28 29 C31 26, 33 26, 36 29" stroke="#d4af37" strokeWidth="3" strokeLinecap="round"/>
+                    <rect x="8" y="24" width="20" height="16" rx="8" stroke="#ffffff" strokeWidth="2.5" fill="#09090b"/>
+                    <rect x="36" y="24" width="20" height="16" rx="8" stroke="#ffffff" strokeWidth="2.5" fill="#09090b"/>
+                    <path d="M28 32 C31 29, 33 29, 36 32" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round"/>
                   </svg>
                 </div>
               )}
@@ -129,7 +143,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   {settings?.storeName ? (
                     settings.storeName
                   ) : (
-                    <>NEXT <span className="text-champagne-600 font-sans text-lg font-light">VISION</span></>
+                    <>NEXT <span className="text-zinc-500 font-sans text-lg font-light">VISION</span></>
                   )}
                 </span>
                 <span className="text-[9px] uppercase tracking-widest text-luxury-500 block font-semibold">
@@ -179,7 +193,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="hidden lg:flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-luxury-800 hover:text-luxury-950 hover:bg-luxury-100 rounded-full transition-colors border border-luxury-200 shadow-2xs"
                 title="Locate nearest optical shop with interactive free map"
               >
-                <MapPin className="w-3.5 h-3.5 text-champagne-600" />
+                <MapPin className="w-3.5 h-3.5 text-zinc-600" />
                 <span>Find Stores</span>
               </button>
             )}
@@ -187,9 +201,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Virtual Try-On AR Launcher CTA (Checklist #16: Clear CTAs) */}
             <button
               onClick={onOpenTryOn}
-              className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-full bg-luxury-950 hover:bg-luxury-800 text-white text-xs font-bold shadow-md hover:shadow-lg transition-all active:scale-95 border border-champagne-500/40"
+              className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-full bg-luxury-950 hover:bg-luxury-800 text-white text-xs font-bold shadow-md hover:shadow-lg transition-all active:scale-95 border border-zinc-700"
             >
-              <Sparkles className="w-3.5 h-3.5 text-gold animate-pulse" />
+              <Sparkles className="w-3.5 h-3.5 text-zinc-200 animate-pulse" />
               <span>Virtual Try-On</span>
               <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
             </button>
@@ -202,7 +216,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <ShoppingBag className="w-5 h-5" />
               {cartCount > 0 && (
-                <span className="absolute top-1 right-1 w-5 h-5 rounded-full bg-luxury-950 text-gold text-[10px] font-bold flex items-center justify-center border-2 border-white shadow-sm">
+                <span className="absolute top-1 right-1 w-5 h-5 rounded-full bg-luxury-950 text-white text-[10px] font-bold flex items-center justify-center border-2 border-white shadow-sm">
                   {cartCount}
                 </span>
               )}
@@ -267,7 +281,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => { onOpenTryOn(); setMobileMenuOpen(false); }}
                 className="w-full py-2.5 bg-luxury-950 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow"
               >
-                <Sparkles className="w-3.5 h-3.5 text-gold" /> Launch Virtual Try-On AR
+                <Sparkles className="w-3.5 h-3.5 text-zinc-200" /> Launch Virtual Try-On AR
               </button>
 
               {onOpenLocator && (
@@ -275,7 +289,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={() => { onOpenLocator(); setMobileMenuOpen(false); }}
                   className="w-full py-2.5 bg-luxury-100 hover:bg-luxury-200 text-luxury-900 rounded-xl text-xs font-bold flex items-center justify-center gap-2 border border-luxury-200 transition-colors"
                 >
-                  <MapPin className="w-3.5 h-3.5 text-champagne-600" /> Find Optical Stores (Live Map)
+                  <MapPin className="w-3.5 h-3.5 text-zinc-700" /> Find Optical Stores (Live Map)
                 </button>
               )}
 
@@ -284,16 +298,26 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={onToggleCurrency}
                   className="flex items-center gap-1.5 text-luxury-700 font-semibold"
                 >
-                  <Globe className="w-3.5 h-3.5 text-champagne-600" />
+                  <Globe className="w-3.5 h-3.5 text-zinc-600" />
                   <span>Currency: {currency}</span>
                 </button>
 
-                <button
-                  onClick={() => { onOpenAdmin(); setMobileMenuOpen(false); }}
-                  className="text-luxury-500 hover:text-luxury-950 font-medium"
-                >
-                  Admin Portal
-                </button>
+                <div className="flex items-center gap-3">
+                  {onOpenPartnerRequest && (
+                    <button
+                      onClick={() => { onOpenPartnerRequest(); setMobileMenuOpen(false); }}
+                      className="text-zinc-800 hover:text-zinc-950 font-semibold"
+                    >
+                      Partner Request
+                    </button>
+                  )}
+                  <button
+                    onClick={() => { onOpenAdmin(); setMobileMenuOpen(false); }}
+                    className="text-luxury-500 hover:text-luxury-950 font-medium"
+                  >
+                    Admin Portal
+                  </button>
+                </div>
               </div>
             </div>
           </div>

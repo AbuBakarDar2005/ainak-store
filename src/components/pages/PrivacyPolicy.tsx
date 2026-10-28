@@ -16,7 +16,7 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onBack }) => {
       </button>
 
       <div className="border-b border-luxury-100 pb-6 mb-8">
-        <span className="text-xs uppercase font-bold tracking-wider text-champagne-700 bg-champagne-100 px-3 py-1 rounded-full">
+        <span className="text-xs uppercase font-bold tracking-wider text-zinc-800 bg-zinc-100 border border-zinc-200 px-3 py-1 rounded-full">
           Checklist #1: Privacy Commitment
         </span>
         <h1 className="font-serif text-3xl font-bold text-luxury-950 mt-3">
@@ -29,7 +29,7 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onBack }) => {
         {/* Core AR & Webcam Clause */}
         <div className="p-5 bg-luxury-50 rounded-2xl border border-luxury-200">
           <div className="flex items-center gap-2.5 mb-2 text-luxury-950 font-bold text-sm">
-            <EyeOff className="w-5 h-5 text-champagne-600" />
+            <EyeOff className="w-5 h-5 text-zinc-800" />
             <h3>1. Virtual Try-On & Camera Privacy (100% On-Device Processing)</h3>
           </div>
           <p className="mb-2">

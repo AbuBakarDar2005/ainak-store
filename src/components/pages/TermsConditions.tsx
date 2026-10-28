@@ -16,7 +16,7 @@ export const TermsConditions: React.FC<TermsConditionsProps> = ({ onBack }) => {
       </button>
 
       <div className="border-b border-luxury-100 pb-6 mb-8">
-        <span className="text-xs uppercase font-bold tracking-wider text-champagne-700 bg-champagne-100 px-3 py-1 rounded-full">
+        <span className="text-xs uppercase font-bold tracking-wider text-zinc-800 bg-zinc-100 border border-zinc-200 px-3 py-1 rounded-full">
           Checklist #2: Terms & Conditions
         </span>
         <h1 className="font-serif text-3xl font-bold text-luxury-950 mt-3">
@@ -27,9 +27,9 @@ export const TermsConditions: React.FC<TermsConditionsProps> = ({ onBack }) => {
 
       <div className="space-y-8 text-xs text-luxury-700 leading-relaxed">
         {/* 7-Day Replacement Policy */}
-        <div className="p-5 bg-champagne-50/60 rounded-2xl border border-champagne-300">
+        <div className="p-5 bg-luxury-50 rounded-2xl border border-luxury-200">
           <div className="flex items-center gap-2.5 mb-2 text-luxury-950 font-bold text-sm">
-            <RotateCcw className="w-5 h-5 text-champagne-700" />
+            <RotateCcw className="w-5 h-5 text-zinc-800" />
             <h3>1. 7-Day Hassle-Free Replacement Policy</h3>
           </div>
           <p className="mb-2">

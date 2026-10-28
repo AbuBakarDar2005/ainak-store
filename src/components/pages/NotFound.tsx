@@ -22,10 +22,10 @@ export const NotFound: React.FC<NotFoundProps> = ({ onGoHome, onSearch }) => {
       <div className="max-w-md w-full">
         {/* Eyewear Graphic */}
         <div className="w-20 h-20 rounded-full bg-luxury-100 text-luxury-950 flex items-center justify-center mx-auto mb-6 shadow-sm border border-luxury-200">
-          <EyeOff className="w-10 h-10 stroke-[1.4] text-champagne-600" />
+          <EyeOff className="w-10 h-10 stroke-[1.4] text-zinc-800" />
         </div>
 
-        <span className="text-xs uppercase font-bold tracking-widest text-champagne-700 bg-champagne-100 px-3 py-1 rounded-full">
+        <span className="text-xs uppercase font-bold tracking-widest text-zinc-800 bg-zinc-100 border border-zinc-200 px-3 py-1 rounded-full">
           Error 404 • Page Not Found
         </span>
 
@@ -58,7 +58,7 @@ export const NotFound: React.FC<NotFoundProps> = ({ onGoHome, onSearch }) => {
           onClick={onGoHome}
           className="px-6 py-2.5 bg-luxury-950 hover:bg-luxury-800 text-white rounded-xl text-xs font-bold transition-all shadow-md inline-flex items-center gap-2"
         >
-          <Home className="w-4 h-4 text-gold" /> Return to Storefront
+          <Home className="w-4 h-4 text-white" /> Return to Storefront
         </button>
       </div>
     </div>

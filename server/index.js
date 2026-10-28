@@ -192,12 +192,46 @@ app.get('/api/partner-stores/:id', (req, res) => {
   res.json({ store });
 });
 
+// ==========================================
+// EYESIGHT EXAMINATION BOOKINGS
+// ==========================================
+
+// Public: Book Free Eyesight Examination at Chosen Partner Store
+app.post('/api/eyesight-bookings', (req, res) => {
+  const { customerName, customerPhone, date, shopName } = req.body;
+  if (!customerName || !customerPhone || !date) {
+    return res.status(400).json({ error: 'Name, phone number, and appointment date are required' });
+  }
+
+  const booking = db.addEyesightBooking(req.body);
+
+  // Automation log
+  db.addAutomationLog(
+    'eyesight_booking',
+    'Success',
+    `New Eyesight Booking: ${booking.customerName} booked at "${booking.shopName}" (${booking.shopCity}) for ${booking.date} at ${booking.time}`,
+    booking
+  );
+
+  res.json({
+    success: true,
+    message: `Your eye examination has been booked successfully at ${booking.shopName}!`,
+    booking
+  });
+});
+
 // Helper to format clean WhatsApp order summary
 function formatWhatsAppOrderMessage(order, storeSettings) {
   const itemsText = order.items.map(item => {
     let line = `• ${item.title} (${item.color}) x${item.quantity} — Rs. ${item.price.toLocaleString()}`;
     if (item.lensOption) {
       line += `\n  ↳ Lens: ${item.lensOption.type}`;
+      if (item.lensOption.selectedTint) {
+        line += ` (Sun Tint: ${item.lensOption.selectedTint})`;
+      }
+      if (item.lensOption.photochromicEnabled !== undefined) {
+        line += ` [${item.lensOption.photochromicEnabled ? 'With Photochromic' : 'Without Photochromic'}]`;
+      }
       if (item.lensOption.prescriptionType) {
         line += `\n  ↳ Rx: ${item.lensOption.prescriptionType}`;
       }
@@ -476,21 +510,30 @@ app.post('/api/ai/chat', aiLimiter, async (req, res) => {
 app.post('/api/partner/register', (req, res) => {
   const { name, username, email, phone, storeName, city, address, password, notes } = req.body;
   if (!name || !username || !email || !password || !storeName) {
-    return res.status(400).json({ error: 'Name, username, email, password, and optical store name are required' });
+    return res.status(400).json({ error: 'Full name, desired username, email, password, and optical store name are required.' });
   }
 
   if (password.length < 6) {
-    return res.status(400).json({ error: 'Password must be at least 6 characters long' });
+    return res.status(400).json({ error: 'Password must be at least 6 characters long.' });
+  }
+
+  const cleanUsername = String(username).trim().toLowerCase();
+  if (/\s/.test(cleanUsername)) {
+    return res.status(400).json({ error: 'Username cannot contain spaces. Use letters, numbers, or underscores.' });
+  }
+
+  if (cleanUsername.length < 3) {
+    return res.status(400).json({ error: 'Username must be at least 3 characters long.' });
   }
 
   try {
     const newPartnerAdmin = db.addPartnerAdmin({
       name,
-      username,
+      username: cleanUsername,
       email,
       phone,
       storeName,
-      city,
+      city: city || 'Lahore',
       address,
       password,
       notes,
@@ -501,12 +544,12 @@ app.post('/api/partner/register', (req, res) => {
       'system',
       'Pending',
       `New Partner Admin registration request: ${name} (${storeName}, ${city || 'Lahore'}) - Awaiting Main Admin Verification`,
-      { username, email, phone, storeName }
+      { username: cleanUsername, email, phone, storeName }
     );
 
     res.status(201).json({
       success: true,
-      message: 'Partner Admin account submitted successfully! Your account is currently pending verification from the Main Admin. You will be able to log in once approved.',
+      message: 'Admin Partner request submitted successfully! Your account is pending verification from the Main Admin. Once approved, your store will be verified and you can log in.',
       partnerAdmin: newPartnerAdmin
     });
   } catch (err) {
@@ -524,13 +567,18 @@ app.post('/api/admin/login', (req, res) => {
   const cleanUsername = String(username).trim();
 
   // 1. Check Main Admin (SuperAdmin)
-  if (cleanUsername.toLowerCase() === 'admin') {
+  const isSuperAdminAttempt = cleanUsername.toLowerCase() === 'darmuhammadabubakar9' ||
+                              cleanUsername.toLowerCase() === 'admin' ||
+                              cleanUsername.toLowerCase() === (db.data.admin?.username || 'darmuhammadabubakar9').toLowerCase();
+
+  if (isSuperAdminAttempt) {
     if (!db.verifyAdminPassword(password)) {
       return res.status(401).json({ error: 'Invalid admin credentials' });
     }
 
+    const currentAdminUsername = db.data.admin?.username || 'darmuhammadabubakar9';
     const token = jwt.sign(
-      { username: 'admin', role: 'superadmin', name: 'Main Administrator' },
+      { username: currentAdminUsername, role: 'superadmin', name: 'Main Administrator' },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -539,7 +587,7 @@ app.post('/api/admin/login', (req, res) => {
       success: true,
       token,
       user: {
-        username: 'admin',
+        username: currentAdminUsername,
         role: 'superadmin',
         name: 'Main Administrator'
       }
@@ -603,9 +651,47 @@ app.post('/api/admin/login', (req, res) => {
   });
 });
 
+// Get Current Authenticated Admin Profile
+app.get('/api/admin/me', authenticateAdmin, (req, res) => {
+  if (req.admin.role === 'superadmin') {
+    return res.json({
+      user: {
+        username: db.data.admin?.username || 'darmuhammadabubakar9',
+        role: 'superadmin',
+        name: 'Main Administrator'
+      }
+    });
+  }
+
+  const partnerAdmin = db.getPartnerAdminWithAuth(req.admin.username);
+  if (!partnerAdmin) {
+    return res.status(404).json({ error: 'Partner admin account not found' });
+  }
+
+  res.json({
+    user: {
+      id: partnerAdmin.id,
+      username: partnerAdmin.username,
+      name: partnerAdmin.name,
+      role: 'partner_admin',
+      storeName: partnerAdmin.storeName,
+      city: partnerAdmin.city,
+      address: partnerAdmin.address,
+      phone: partnerAdmin.phone,
+      email: partnerAdmin.email,
+      status: partnerAdmin.status
+    }
+  });
+});
+
 // Admin Dashboard KPI Stats & Analytics
 app.get('/api/admin/stats', authenticateAdmin, (req, res) => {
   const stats = db.getAnalytics();
+  // Partner Admins are restricted: do not expose revenue or orders to partner admins
+  if (req.admin.role !== 'superadmin') {
+    const { totalRevenue, totalOrders, ...partnerSafeStats } = stats;
+    return res.json({ stats: partnerSafeStats });
+  }
   res.json({ stats });
 });
 
@@ -662,32 +748,86 @@ app.put('/api/admin/products/:id', authenticateAdmin, (req, res) => {
   res.json({ success: true, product: updated });
 });
 
-app.delete('/api/admin/products/:id', authenticateAdmin, (req, res) => {
+app.delete('/api/admin/products/:id', authenticateAdmin, requireSuperAdmin, (req, res) => {
   const success = db.deleteProduct(req.params.id);
   if (!success) return res.status(404).json({ error: 'Product not found' });
   res.json({ success: true, message: 'Product deleted' });
 });
 
-// Admin Orders Management
-app.get('/api/admin/orders', authenticateAdmin, (req, res) => {
+// Admin Orders Management (Strictly Main Admin / SuperAdmin Only)
+app.get('/api/admin/orders', authenticateAdmin, requireSuperAdmin, (req, res) => {
   res.json({ orders: db.getOrders() });
 });
 
-app.patch('/api/admin/orders/:id/status', authenticateAdmin, (req, res) => {
+app.patch('/api/admin/orders/:id/status', authenticateAdmin, requireSuperAdmin, (req, res) => {
   const { status, trackingNumber } = req.body;
   const order = db.updateOrderStatus(req.params.id, status, trackingNumber);
   if (!order) return res.status(404).json({ error: 'Order not found' });
   res.json({ success: true, order });
 });
 
-// Store Settings & Contact Information (Address, Phone, WhatsApp, Rates)
-app.put('/api/admin/settings', authenticateAdmin, (req, res) => {
+// Store Settings & Contact Information (Address, Phone, WhatsApp, Rates - SuperAdmin Only)
+app.put('/api/admin/settings', authenticateAdmin, requireSuperAdmin, (req, res) => {
   const settings = db.updateSettings(req.body);
   res.json({ success: true, settings });
 });
 
-// Admin Partner Stores Management (Add, Edit, Delete Partner Stores)
-app.post('/api/admin/partner-stores', authenticateAdmin, (req, res) => {
+// ==========================================
+// LENS CATEGORIES & OPTICS (Customer Choices & Main Admin Management)
+// ==========================================
+
+// Public: Get all active lens categories for user customization
+app.get('/api/lens-types', (req, res) => {
+  const categories = db.getLensCategories(true);
+  res.json({ categories });
+});
+
+// Admin: Get all lens categories (active & inactive)
+app.get('/api/admin/lens-types', authenticateAdmin, (req, res) => {
+  const categories = db.getLensCategories(false);
+  res.json({ categories });
+});
+
+// Admin: Add new custom lens category (SuperAdmin only)
+app.post('/api/admin/lens-types', authenticateAdmin, requireSuperAdmin, (req, res) => {
+  const { name, price } = req.body;
+  if (!name || price === undefined) {
+    return res.status(400).json({ error: 'Lens category name and price are required' });
+  }
+  const category = db.addLensCategory(req.body);
+  db.addAutomationLog('system', 'Success', `Main Admin added new lens category: ${category.name} (Rs. ${category.price})`);
+  res.status(201).json({ success: true, category });
+});
+
+// Admin: Rename or update lens category (SuperAdmin only)
+app.put('/api/admin/lens-types/:id', authenticateAdmin, requireSuperAdmin, (req, res) => {
+  const updated = db.updateLensCategory(req.params.id, req.body);
+  if (!updated) {
+    return res.status(404).json({ error: 'Lens category not found' });
+  }
+  db.addAutomationLog('system', 'Success', `Main Admin updated lens category: ${updated.name} (Rs. ${updated.price})`);
+  res.json({ success: true, category: updated });
+});
+
+// Admin: Delete custom lens category (SuperAdmin only)
+app.delete('/api/admin/lens-types/:id', authenticateAdmin, requireSuperAdmin, (req, res) => {
+  const deleted = db.deleteLensCategory(req.params.id);
+  if (!deleted) {
+    return res.status(404).json({ error: 'Lens category not found or already deleted' });
+  }
+  db.addAutomationLog('system', 'Success', `Main Admin removed lens category ID ${req.params.id}`);
+  res.json({ success: true, message: 'Lens category deleted successfully' });
+});
+
+// Admin: Reset to default 5 standard lens categories (SuperAdmin only)
+app.post('/api/admin/lens-types/reset', authenticateAdmin, requireSuperAdmin, (req, res) => {
+  const categories = db.resetLensCategories();
+  db.addAutomationLog('system', 'Success', 'Main Admin restored standard 5 optical lens categories');
+  res.json({ success: true, categories });
+});
+
+// Admin Partner Stores Management (Add, Edit, Delete Partner Stores - SuperAdmin Only)
+app.post('/api/admin/partner-stores', authenticateAdmin, requireSuperAdmin, (req, res) => {
   const { name, city, address, phone } = req.body;
   if (!name || !city || !address || !phone) {
     return res.status(400).json({ error: 'Store name, city, address, and phone number are required' });
@@ -697,7 +837,7 @@ app.post('/api/admin/partner-stores', authenticateAdmin, (req, res) => {
   res.status(201).json({ success: true, store });
 });
 
-app.put('/api/admin/partner-stores/:id', authenticateAdmin, (req, res) => {
+app.put('/api/admin/partner-stores/:id', authenticateAdmin, requireSuperAdmin, (req, res) => {
   const updated = db.updatePartnerStore(req.params.id, req.body);
   if (!updated) {
     return res.status(404).json({ error: 'Partner store not found' });
@@ -705,12 +845,99 @@ app.put('/api/admin/partner-stores/:id', authenticateAdmin, (req, res) => {
   res.json({ success: true, store: updated });
 });
 
-app.delete('/api/admin/partner-stores/:id', authenticateAdmin, (req, res) => {
+app.delete('/api/admin/partner-stores/:id', authenticateAdmin, requireSuperAdmin, (req, res) => {
   const deleted = db.deletePartnerStore(req.params.id);
   if (!deleted) {
     return res.status(404).json({ error: 'Partner store not found or already deleted' });
   }
   res.json({ success: true, message: 'Partner store deleted successfully' });
+});
+
+// ==========================================
+// ADMIN EYESIGHT BOOKINGS MANAGEMENT
+// ==========================================
+
+// Admin: Get Eyesight Bookings (Filtered to specific partner for Partner Admin, or all for SuperAdmin)
+app.get('/api/admin/eyesight-bookings', authenticateAdmin, (req, res) => {
+  const { status, search, storeName: queryStoreName, shopId } = req.query;
+
+  // If user is Partner Admin: strictly restrict to their chosen partner clinic/store
+  if (req.admin.role !== 'superadmin') {
+    const partnerAdmin = db.getPartnerAdminWithAuth(req.admin.username);
+    const clinicStoreName = partnerAdmin?.storeName || req.admin.storeName || '';
+    const bookings = db.getEyesightBookings({
+      storeName: clinicStoreName,
+      status,
+      search
+    });
+    return res.json({
+      bookings,
+      clinicStoreName,
+      isPartnerAdmin: true
+    });
+  }
+
+  // If user is SuperAdmin: can view all or filter by queryStoreName/shopId
+  const bookings = db.getEyesightBookings({
+    shopId,
+    storeName: queryStoreName,
+    status,
+    search
+  });
+  res.json({
+    bookings,
+    isSuperAdmin: true
+  });
+});
+
+// Admin: Update Eyesight Booking Status (Confirm, Complete, Cancel)
+app.patch('/api/admin/eyesight-bookings/:id/status', authenticateAdmin, (req, res) => {
+  const { status, notes } = req.body;
+  if (!status) {
+    return res.status(400).json({ error: 'Status is required' });
+  }
+
+  const booking = db.getEyesightBookingById(req.params.id);
+  if (!booking) {
+    return res.status(404).json({ error: 'Eyesight booking not found' });
+  }
+
+  // If partner admin, ensure booking belongs to their store
+  if (req.admin.role !== 'superadmin') {
+    const partnerAdmin = db.getPartnerAdminWithAuth(req.admin.username);
+    const clinicStoreName = partnerAdmin?.storeName || req.admin.storeName || '';
+    if (booking.shopName.toLowerCase().trim() !== clinicStoreName.toLowerCase().trim()) {
+      return res.status(403).json({ error: 'Unauthorized: You can only update bookings for your own clinic' });
+    }
+  }
+
+  const updated = db.updateEyesightBookingStatus(req.params.id, status, notes);
+  db.addAutomationLog(
+    'eyesight_booking',
+    'Status Updated',
+    `Booking ${req.params.id} for "${updated.customerName}" at "${updated.shopName}" marked as ${status}`
+  );
+  res.json({ success: true, booking: updated });
+});
+
+// Admin: Delete Eyesight Booking
+app.delete('/api/admin/eyesight-bookings/:id', authenticateAdmin, (req, res) => {
+  const booking = db.getEyesightBookingById(req.params.id);
+  if (!booking) {
+    return res.status(404).json({ error: 'Eyesight booking not found' });
+  }
+
+  // If partner admin, ensure booking belongs to their store
+  if (req.admin.role !== 'superadmin') {
+    const partnerAdmin = db.getPartnerAdminWithAuth(req.admin.username);
+    const clinicStoreName = partnerAdmin?.storeName || req.admin.storeName || '';
+    if (booking.shopName.toLowerCase().trim() !== clinicStoreName.toLowerCase().trim()) {
+      return res.status(403).json({ error: 'Unauthorized: You can only delete bookings for your own clinic' });
+    }
+  }
+
+  const success = db.deleteEyesightBooking(req.params.id);
+  res.json({ success, message: 'Booking removed successfully' });
 });
 
 // ==========================================
@@ -824,7 +1051,7 @@ app.delete('/api/admin/partner-admins/:id', authenticateAdmin, requireSuperAdmin
   res.json({ success: true, message: 'Partner admin account removed successfully' });
 });
 
-// Admin Password Update (Supports Main Admin and Partner Admins)
+// Admin Password Update (Strictly isolated: Partner Admin can only change their personal credentials)
 app.post('/api/admin/change-password', authenticateAdmin, (req, res) => {
   const { currentPassword, newPassword } = req.body;
   if (!currentPassword || !newPassword) {
@@ -835,14 +1062,23 @@ app.post('/api/admin/change-password', authenticateAdmin, (req, res) => {
     return res.status(400).json({ error: 'New password must be at least 6 characters' });
   }
 
+  // 1. SuperAdmin changes the master store administration password
   if (req.admin.role === 'superadmin') {
     if (!db.verifyAdminPassword(currentPassword)) {
       return res.status(401).json({ error: 'Current password does not match' });
     }
 
     db.updateAdminPassword(newPassword);
+    db.addAutomationLog(
+      'system',
+      'Success',
+      `Main Admin (${req.admin.username}) updated master store administrator password`
+    );
     return res.json({ success: true, message: 'Main Admin password updated successfully' });
-  } else {
+  } 
+  
+  // 2. Partner Admin can ONLY change their personal partner password (isolated from main admin)
+  if (req.admin.role === 'partner_admin') {
     const partner = db.getPartnerAdminWithAuth(req.admin.username);
     if (!partner) {
       return res.status(404).json({ error: 'Partner admin account not found' });
@@ -853,21 +1089,28 @@ app.post('/api/admin/change-password', authenticateAdmin, (req, res) => {
     }
 
     db.updatePartnerAdminPassword(req.admin.username, newPassword);
-    return res.json({ success: true, message: 'Partner Admin password updated successfully' });
+    db.addAutomationLog(
+      'system',
+      'Success',
+      `Partner Admin (@${partner.username}) updated personal account password`
+    );
+    return res.json({ success: true, message: 'Your personal Partner Admin password has been updated successfully' });
   }
+
+  return res.status(403).json({ error: 'Unauthorized to update credentials' });
 });
 
 // ==========================================
 // 4. BUSINESS AUTOMATIONS (GOOGLE SHEETS & CSV)
 // ==========================================
 
-// Get Automation Activity Logs
-app.get('/api/admin/automation/logs', authenticateAdmin, (req, res) => {
+// Get Automation Activity Logs (SuperAdmin only)
+app.get('/api/admin/automation/logs', authenticateAdmin, requireSuperAdmin, (req, res) => {
   res.json({ logs: db.getAutomationLogs() });
 });
 
-// Test Google Sheets Webhook with sample ping
-app.post('/api/admin/automation/google-sheets/test', authenticateAdmin, async (req, res) => {
+// Test Google Sheets Webhook with sample ping (SuperAdmin only)
+app.post('/api/admin/automation/google-sheets/test', authenticateAdmin, requireSuperAdmin, async (req, res) => {
   const { webhookUrl } = req.body;
   if (!webhookUrl || !webhookUrl.startsWith('http')) {
     return res.status(400).json({ error: 'Valid Google Sheets Webhook URL required (starts with https://)' });
@@ -915,8 +1158,8 @@ app.post('/api/admin/automation/google-sheets/test', authenticateAdmin, async (r
   }
 });
 
-// Export all orders as CSV (Direct import to Google Sheets or Excel)
-app.get('/api/admin/orders/export-csv', authenticateAdmin, (req, res) => {
+// Export all orders as CSV (Direct import to Google Sheets or Excel - SuperAdmin only)
+app.get('/api/admin/orders/export-csv', authenticateAdmin, requireSuperAdmin, (req, res) => {
   const csv = db.exportOrdersToCSV();
   res.setHeader('Content-Type', 'text/csv');
   res.setHeader('Content-Disposition', `attachment; filename="nextvision-orders-${Date.now()}.csv"`);

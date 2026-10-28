@@ -358,6 +358,170 @@ const INITIAL_ORDERS = [
   }
 ];
 
+const INITIAL_LENS_CATEGORIES = [
+  {
+    id: "lens-blue-cut",
+    name: "Blue Light Shield (Mobile & Laptop Defense)",
+    categoryKey: "blue_light",
+    description: "Engineered specifically for heavy smartphone, laptop & screen usage. Blocks 99% harmful blue-violet light, eliminates digital eye strain and prevents sleep cycle disruption.",
+    price: 1800,
+    features: [
+      "99% Screen Blue Light Shielding",
+      "Anti-Digital Fatigue Nano-Filter",
+      "High Optical Clarity (Abbe 58)",
+      "Zero Yellow Color Distortion"
+    ],
+    badge: "Screen Essential",
+    isActive: true
+  },
+  {
+    id: "lens-photochromic",
+    name: "Photochromic Transition (Sunlight React)",
+    categoryKey: "photochromic",
+    description: "Rapid light-adaptive smart optics that remain perfectly clear indoors and automatically transform into dark sunglasses (Black, Blue, Amber, Green) when exposed to sun or daylight.",
+    price: 2800,
+    features: [
+      "Fast 30-Second Outdoor Darkening",
+      "Full UV400 Sun Glare Protection",
+      "Choice of 5 Sun Transition Tints",
+      "100% Crystal Clear Indoors"
+    ],
+    badge: "Sun Adaptive",
+    supportsPhotochromicTints: true,
+    availableTints: [
+      "Obsidian Black",
+      "Sapphire Blue",
+      "Amber Brown",
+      "Emerald Green",
+      "Graphite Grey"
+    ],
+    isActive: true
+  },
+  {
+    id: "lens-anti-glare",
+    name: "Anti-Glare + Blue-Cut Dual Shield",
+    categoryKey: "anti_glare_blue_cut",
+    description: "Multi-layer anti-reflective anti-glare coating combined with computer blue-cut shielding. Eliminates halo reflections from night driving headlights and computer monitors.",
+    price: 2400,
+    features: [
+      "16-Layer Anti-Reflective Anti-Glare",
+      "Dual-Band Blue Light Cut Coating",
+      "Hydrophobic Smudge & Dust Repellent",
+      "Night Driving & Office Glare Defense"
+    ],
+    badge: "Anti-Reflective",
+    isActive: true
+  },
+  {
+    id: "lens-all-in-one",
+    name: "Ultra-HD Master Defense (UV400 + Screen + Anti-Glare)",
+    categoryKey: "all_in_one",
+    description: "Medical-grade high-index resin offering comprehensive UV400 sun protection, mobile & laptop screen defense, and diamond-grade anti-glare. Configurable with or without photochromic sunlight ability.",
+    price: 3600,
+    features: [
+      "Comprehensive UV400 Sun Blocking",
+      "Mobile & Laptop Screen Protection",
+      "High-Index Ultra-Thin Lens Profile",
+      "Configurable with/without Photochromic",
+      "Diamond Hard Anti-Scratch Coat"
+    ],
+    badge: "Master Grade",
+    supportsPhotochromicToggle: true,
+    photochromicAddonPrice: 1200,
+    supportsPhotochromicTints: true,
+    availableTints: [
+      "Obsidian Black",
+      "Sapphire Blue",
+      "Amber Brown"
+    ],
+    isActive: true
+  },
+  {
+    id: "lens-smart-glasses",
+    name: "Tri-Active Smart Lenses (Blue Cut + Photochromic + Anti-Glare)",
+    categoryKey: "smart_glasses",
+    description: "Next-generation all-inclusive smart lenses uniting Blue Cut screen filter, automatic Photochromic sunlight adaptation, and 360° Anti-Glare clarity in one intelligent optical formulation.",
+    price: 4800,
+    features: [
+      "Tri-Active Intelligent Optical Fusion",
+      "Active Blue-Cut Screen Nano-Shield",
+      "Automatic Sunlight Photochromic Shift",
+      "16-Layer Anti-Glare Clear Coating",
+      "Rapid Indoor-Outdoor Transition"
+    ],
+    badge: "Smart Tri-Shield",
+    supportsPhotochromicTints: true,
+    availableTints: [
+      "Obsidian Black",
+      "Sapphire Blue",
+      "Graphite Grey",
+      "Ruby Amber"
+    ],
+    isActive: true
+  }
+];
+
+const INITIAL_EYESIGHT_BOOKINGS = [
+  {
+    id: "EB-982101",
+    customerName: "Muhammad Usman",
+    customerPhone: "+92 300 8492011",
+    customerEmail: "usman.optical@example.com",
+    date: "2026-10-28",
+    time: "02:00 PM",
+    shopId: "store-1792953566942",
+    shopName: "TARIQ OPTICAL SERVICE",
+    shopCity: "Lahore",
+    shopAddress: "Main Market, Gulberg II, Lahore",
+    services: [
+      "Automated Computerized Refraction Eye Test",
+      "Visual Acuity & Astigmatism Assessment",
+      "Pupil Distance (PD) Measurement & Frame Fitting"
+    ],
+    status: "Confirmed",
+    notes: "Patient requesting checkup for computer blue-light reading glasses.",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "EB-982102",
+    customerName: "Ayesha Siddiqui",
+    customerPhone: "+92 321 9988771",
+    customerEmail: "ayesha.s@example.com",
+    date: "2026-10-29",
+    time: "04:00 PM",
+    shopId: "store-1792953566942",
+    shopName: "TARIQ OPTICAL SERVICE",
+    shopCity: "Lahore",
+    shopAddress: "Main Market, Gulberg II, Lahore",
+    services: [
+      "Automated Computerized Refraction Eye Test",
+      "Cylinder & Axis Power Verification"
+    ],
+    status: "Confirmed",
+    notes: "Follow up appointment after previous eye check.",
+    createdAt: new Date(Date.now() - 3600000 * 5).toISOString()
+  },
+  {
+    id: "EB-982103",
+    customerName: "Bilal Farooq",
+    customerPhone: "+92 333 4455660",
+    customerEmail: "bilal.farooq@example.com",
+    date: "2026-10-30",
+    time: "12:30 PM",
+    shopId: "store-1793047419124",
+    shopName: "Tariq Vision Center",
+    shopCity: "Lahore",
+    shopAddress: "DHA Phase 5 Commercial, Lahore",
+    services: [
+      "Automated Computerized Refraction Eye Test",
+      "Comprehensive 3D Refraction Eye Test"
+    ],
+    status: "Confirmed",
+    notes: "Needs prescription verification for new titanium frames.",
+    createdAt: new Date(Date.now() - 3600000 * 12).toISOString()
+  }
+];
+
 class Database {
   constructor() {
     this.data = this.load();
@@ -378,23 +542,36 @@ class Database {
         const parsed = JSON.parse(raw);
         parsed.settings = { ...INITIAL_SETTINGS, ...(parsed.settings || {}) };
         parsed.partnerStores = (parsed.partnerStores || []).filter(s => s.isAdminAdded);
-        parsed.partnerAdmins = [];
-        parsed.automationLogs = (parsed.automationLogs || []).filter(
-          l => !l.message?.toLowerCase().includes('partner admin')
-        );
+        parsed.partnerAdmins = parsed.partnerAdmins || [];
+        parsed.lensCategories = (parsed.lensCategories && parsed.lensCategories.length > 0)
+          ? parsed.lensCategories
+          : JSON.parse(JSON.stringify(INITIAL_LENS_CATEGORIES));
+        parsed.eyesightBookings = (parsed.eyesightBookings && parsed.eyesightBookings.length > 0)
+          ? parsed.eyesightBookings
+          : JSON.parse(JSON.stringify(INITIAL_EYESIGHT_BOOKINGS));
+        if (!parsed.admin) {
+          parsed.admin = {
+            username: "darmuhammadabubakar9",
+            passwordHash: bcrypt.hashSync("butt12345@", 10)
+          };
+        } else {
+          parsed.admin.username = parsed.admin.username || "darmuhammadabubakar9";
+        }
         return parsed;
       }
     } catch (err) {
       console.error("Error reading db.json, falling back to defaults:", err);
     }
 
-    const defaultAdminHash = bcrypt.hashSync("admin123456", 10);
+    const defaultAdminHash = bcrypt.hashSync("butt12345@", 10);
     const initialData = {
       admin: {
-        username: "admin",
+        username: "darmuhammadabubakar9",
         passwordHash: defaultAdminHash
       },
       partnerAdmins: [],
+      lensCategories: JSON.parse(JSON.stringify(INITIAL_LENS_CATEGORIES)),
+      eyesightBookings: JSON.parse(JSON.stringify(INITIAL_EYESIGHT_BOOKINGS)),
       settings: INITIAL_SETTINGS,
       products: INITIAL_PRODUCTS,
       partnerStores: INITIAL_PARTNER_STORES,
@@ -559,8 +736,16 @@ class Database {
 
     const cleanUsername = String(partnerData.username).trim().toLowerCase();
 
-    if (cleanUsername === 'admin') {
-      throw new Error('Username "admin" is reserved for the Main Administrator.');
+    if (cleanUsername === 'admin' || cleanUsername === 'darmuhammadabubakar9') {
+      throw new Error('This username is reserved for the Main Administrator.');
+    }
+
+    if (/\s/.test(cleanUsername)) {
+      throw new Error('Username cannot contain spaces. Please use letters, numbers, or underscores.');
+    }
+
+    if (cleanUsername.length < 3) {
+      throw new Error('Username must be at least 3 characters long.');
     }
 
     const existing = this.data.partnerAdmins.find(
@@ -582,7 +767,7 @@ class Database {
     const newPartnerAdmin = {
       id: 'padmin-' + Date.now(),
       name: String(partnerData.name).trim(),
-      username: String(partnerData.username).trim(),
+      username: cleanUsername,
       email: String(partnerData.email).trim().toLowerCase(),
       phone: String(partnerData.phone || '').trim(),
       storeName: String(partnerData.storeName || '').trim(),
@@ -602,10 +787,70 @@ class Database {
       passwordHash
     });
 
+    // If directly verified on creation, ensure partner store is added to partnerStores
+    if (isDirectlyVerified && newPartnerAdmin.storeName) {
+      this.ensurePartnerStoreSynced(newPartnerAdmin);
+    }
+
     this.save();
 
     const { ...safeAdmin } = newPartnerAdmin;
     return safeAdmin;
+  }
+
+  ensurePartnerStoreSynced(partnerAdmin) {
+    if (!this.data.partnerStores) this.data.partnerStores = [];
+    const storeNameLower = partnerAdmin.storeName.trim().toLowerCase();
+    const cityLower = (partnerAdmin.city || 'Lahore').trim().toLowerCase();
+
+    const existingStore = this.data.partnerStores.find(
+      s => s.name.trim().toLowerCase() === storeNameLower && s.city.trim().toLowerCase() === cityLower
+    );
+
+    if (!existingStore) {
+      const CITY_COORDINATES = {
+        'lahore': { lat: 31.5204, lng: 74.3587, province: 'Punjab' },
+        'karachi': { lat: 24.8607, lng: 67.0011, province: 'Sindh' },
+        'islamabad': { lat: 33.6844, lng: 73.0479, province: 'Islamabad Capital Territory' },
+        'rawalpindi': { lat: 33.5651, lng: 73.0169, province: 'Punjab' },
+        'faisalabad': { lat: 31.4504, lng: 73.1350, province: 'Punjab' },
+        'multan': { lat: 30.1575, lng: 71.5249, province: 'Punjab' },
+        'peshawar': { lat: 34.0151, lng: 71.5249, province: 'Khyber Pakhtunkhwa' },
+        'sialkot': { lat: 32.4945, lng: 74.5229, province: 'Punjab' },
+        'gujranwala': { lat: 32.1877, lng: 74.1945, province: 'Punjab' },
+        'quetta': { lat: 30.1798, lng: 66.9750, province: 'Balochistan' }
+      };
+
+      const cityInfo = CITY_COORDINATES[cityLower] || { lat: 31.5204, lng: 74.3587, province: 'Punjab' };
+
+      const newStore = {
+        id: 'store-' + Date.now(),
+        name: partnerAdmin.storeName.trim(),
+        type: 'Authorized Partner',
+        address: partnerAdmin.address?.trim() || `${partnerAdmin.city}, Pakistan`,
+        city: partnerAdmin.city || 'Lahore',
+        province: cityInfo.province,
+        phone: partnerAdmin.phone || '+92 300 0000000',
+        whatsapp: partnerAdmin.phone || '+92 300 0000000',
+        timings: '10:00 AM - 10:00 PM (Daily)',
+        lat: cityInfo.lat,
+        lng: cityInfo.lng,
+        rating: 4.8,
+        reviewsCount: 1,
+        image: 'https://images.unsplash.com/photo-1591076482161-42ce6da69f67?auto=format&fit=crop&w=600&q=80',
+        services: [
+          'Computerized Eye Exam',
+          'Same-Day Lens Fitting'
+        ],
+        hasFreeEyeTest: true,
+        hasTryOnKiosk: true,
+        hasSameDayLenses: true,
+        isOpenNow: true,
+        isAdminAdded: true,
+        createdAt: new Date().toISOString()
+      };
+      this.data.partnerStores.unshift(newStore);
+    }
   }
 
   verifyPartnerAdmin(id, verifiedBy = 'admin') {
@@ -617,6 +862,10 @@ class Database {
     this.data.partnerAdmins[index].verifiedAt = new Date().toISOString();
     this.data.partnerAdmins[index].verifiedBy = verifiedBy;
     this.data.partnerAdmins[index].rejectionReason = null;
+
+    // Automatically synchronize the verified partner store into partnerStores
+    this.ensurePartnerStoreSynced(this.data.partnerAdmins[index]);
+
     this.save();
 
     const { passwordHash, ...safePartnerAdmin } = this.data.partnerAdmins[index];
@@ -846,6 +1095,173 @@ class Database {
     this.data.partnerStores = this.data.partnerStores.filter(s => s.id !== id);
     this.save();
     return this.data.partnerStores.length < initialLength;
+  }
+
+  // --- Lens Categories & Optics Management (Main Admin Customizable) ---
+  getLensCategories(activeOnly = false) {
+    if (!this.data.lensCategories || this.data.lensCategories.length === 0) {
+      this.data.lensCategories = JSON.parse(JSON.stringify(INITIAL_LENS_CATEGORIES));
+      this.save();
+    }
+    if (activeOnly) {
+      return this.data.lensCategories.filter(lc => lc.isActive !== false);
+    }
+    return this.data.lensCategories;
+  }
+
+  getLensCategoryById(id) {
+    const list = this.getLensCategories();
+    return list.find(lc => lc.id === id);
+  }
+
+  addLensCategory(categoryData) {
+    if (!this.data.lensCategories) this.data.lensCategories = JSON.parse(JSON.stringify(INITIAL_LENS_CATEGORIES));
+    const newCategory = {
+      id: 'lens-' + Date.now(),
+      name: categoryData.name?.trim() || 'New Optical Lens Category',
+      categoryKey: categoryData.categoryKey || 'custom',
+      description: categoryData.description?.trim() || '',
+      price: Number(categoryData.price) || 0,
+      features: Array.isArray(categoryData.features) ? categoryData.features : [],
+      badge: categoryData.badge || '',
+      supportsPhotochromicTints: Boolean(categoryData.supportsPhotochromicTints),
+      availableTints: Array.isArray(categoryData.availableTints) && categoryData.availableTints.length > 0 
+        ? categoryData.availableTints 
+        : ['Obsidian Black', 'Sapphire Blue'],
+      supportsPhotochromicToggle: Boolean(categoryData.supportsPhotochromicToggle),
+      photochromicAddonPrice: Number(categoryData.photochromicAddonPrice) || 0,
+      isActive: categoryData.isActive !== undefined ? Boolean(categoryData.isActive) : true,
+      updatedAt: new Date().toISOString()
+    };
+    this.data.lensCategories.push(newCategory);
+    this.save();
+    return newCategory;
+  }
+
+  updateLensCategory(id, categoryData) {
+    if (!this.data.lensCategories) this.data.lensCategories = JSON.parse(JSON.stringify(INITIAL_LENS_CATEGORIES));
+    const index = this.data.lensCategories.findIndex(lc => lc.id === id);
+    if (index === -1) return null;
+
+    this.data.lensCategories[index] = {
+      ...this.data.lensCategories[index],
+      ...categoryData,
+      id,
+      name: categoryData.name !== undefined ? categoryData.name.trim() : this.data.lensCategories[index].name,
+      description: categoryData.description !== undefined ? categoryData.description.trim() : this.data.lensCategories[index].description,
+      price: categoryData.price !== undefined ? Number(categoryData.price) : this.data.lensCategories[index].price,
+      photochromicAddonPrice: categoryData.photochromicAddonPrice !== undefined ? Number(categoryData.photochromicAddonPrice) : this.data.lensCategories[index].photochromicAddonPrice,
+      features: Array.isArray(categoryData.features) ? categoryData.features : this.data.lensCategories[index].features,
+      availableTints: Array.isArray(categoryData.availableTints) ? categoryData.availableTints : this.data.lensCategories[index].availableTints,
+      updatedAt: new Date().toISOString()
+    };
+    this.save();
+    return this.data.lensCategories[index];
+  }
+
+  deleteLensCategory(id) {
+    if (!this.data.lensCategories) this.data.lensCategories = JSON.parse(JSON.stringify(INITIAL_LENS_CATEGORIES));
+    const initialLen = this.data.lensCategories.length;
+    this.data.lensCategories = this.data.lensCategories.filter(lc => lc.id !== id);
+    this.save();
+    return this.data.lensCategories.length < initialLen;
+  }
+
+  resetLensCategories() {
+    this.data.lensCategories = JSON.parse(JSON.stringify(INITIAL_LENS_CATEGORIES));
+    this.save();
+    return this.data.lensCategories;
+  }
+
+  // --- Eyesight Examination Bookings (Per Partner Clinic) ---
+  getEyesightBookings(filter = {}) {
+    if (!this.data.eyesightBookings) {
+      this.data.eyesightBookings = JSON.parse(JSON.stringify(INITIAL_EYESIGHT_BOOKINGS));
+      this.save();
+    }
+    let list = [...this.data.eyesightBookings];
+    const { shopId, storeName, status, search } = filter;
+
+    if (shopId) {
+      list = list.filter(b => b.shopId === shopId);
+    }
+    if (storeName) {
+      const sNameLower = String(storeName).toLowerCase().trim();
+      list = list.filter(b => b.shopName && b.shopName.toLowerCase().trim().includes(sNameLower));
+    }
+    if (status && status !== 'all') {
+      list = list.filter(b => b.status === status);
+    }
+    if (search) {
+      const q = String(search).toLowerCase().trim();
+      list = list.filter(b =>
+        (b.customerName && b.customerName.toLowerCase().includes(q)) ||
+        (b.customerPhone && b.customerPhone.toLowerCase().includes(q)) ||
+        (b.id && b.id.toLowerCase().includes(q)) ||
+        (b.shopName && b.shopName.toLowerCase().includes(q)) ||
+        (b.shopCity && b.shopCity.toLowerCase().includes(q))
+      );
+    }
+
+    return list.sort((a, b) => new Date(b.createdAt || b.date).getTime() - new Date(a.createdAt || a.date).getTime());
+  }
+
+  getEyesightBookingById(id) {
+    if (!this.data.eyesightBookings) return null;
+    return this.data.eyesightBookings.find(b => b.id === id);
+  }
+
+  addEyesightBooking(bookingData) {
+    if (!this.data.eyesightBookings) {
+      this.data.eyesightBookings = [];
+    }
+    const newBooking = {
+      id: 'EB-' + Date.now().toString().slice(-6) + Math.floor(10 + Math.random() * 90),
+      customerName: String(bookingData.customerName || 'Valued Patient').trim(),
+      customerPhone: String(bookingData.customerPhone || '').trim(),
+      customerEmail: bookingData.customerEmail ? String(bookingData.customerEmail).trim() : '',
+      date: String(bookingData.date || new Date().toISOString().split('T')[0]),
+      time: String(bookingData.time || '02:00 PM'),
+      shopId: String(bookingData.shopId || 'store-partner'),
+      shopName: String(bookingData.shopName || 'Authorized Partner Clinic').trim(),
+      shopCity: String(bookingData.shopCity || 'Lahore').trim(),
+      shopAddress: String(bookingData.shopAddress || '').trim(),
+      services: Array.isArray(bookingData.services) && bookingData.services.length > 0 
+        ? bookingData.services 
+        : [
+            'Automated Computerized Refraction Eye Test',
+            'Visual Acuity & Astigmatism Assessment',
+            'Pupil Distance (PD) Measurement & Frame Fitting'
+          ],
+      status: 'Confirmed',
+      notes: bookingData.notes ? String(bookingData.notes).trim() : 'Booked via Store Locator',
+      createdAt: new Date().toISOString()
+    };
+    this.data.eyesightBookings.unshift(newBooking);
+    this.save();
+    return newBooking;
+  }
+
+  updateEyesightBookingStatus(id, status, notes) {
+    if (!this.data.eyesightBookings) return null;
+    const index = this.data.eyesightBookings.findIndex(b => b.id === id);
+    if (index === -1) return null;
+
+    this.data.eyesightBookings[index].status = status;
+    if (notes !== undefined) {
+      this.data.eyesightBookings[index].notes = notes;
+    }
+    this.data.eyesightBookings[index].updatedAt = new Date().toISOString();
+    this.save();
+    return this.data.eyesightBookings[index];
+  }
+
+  deleteEyesightBooking(id) {
+    if (!this.data.eyesightBookings) return false;
+    const initialLen = this.data.eyesightBookings.length;
+    this.data.eyesightBookings = this.data.eyesightBookings.filter(b => b.id !== id);
+    this.save();
+    return this.data.eyesightBookings.length < initialLen;
   }
 }
 

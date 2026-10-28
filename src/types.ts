@@ -35,9 +35,32 @@ export interface Product {
   vtoVerticalOffset: number;
 }
 
+export interface LensTint {
+  name: string;
+  color: string;
+  description?: string;
+}
+
+export interface LensCategory {
+  id: string;
+  name: string;
+  categoryKey: 'blue_light' | 'photochromic' | 'anti_glare_blue_cut' | 'all_in_one' | 'smart_glasses' | 'custom' | string;
+  description: string;
+  price: number;
+  features: string[];
+  badge?: string;
+  supportsPhotochromicTints?: boolean;
+  availableTints?: (string | LensTint)[];
+  supportsPhotochromicToggle?: boolean;
+  photochromicAddonPrice?: number;
+  isActive: boolean;
+}
+
 export interface LensOption {
   type: string;
   price: number;
+  selectedTint?: string;
+  photochromicEnabled?: boolean;
   prescriptionType?: string;
   sphereR?: string;
   sphereL?: string;
@@ -159,11 +182,33 @@ export interface AdminUser {
   id?: string;
   username: string;
   name?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
   role: 'superadmin' | 'partner_admin';
   storeName?: string;
   city?: string;
   status?: 'pending' | 'verified' | 'rejected';
 }
+
+export interface EyesightBooking {
+  id: string;
+  customerName: string;
+  customerPhone: string;
+  customerEmail?: string;
+  date: string;
+  time: string;
+  shopId: string;
+  shopName: string;
+  shopCity: string;
+  shopAddress?: string;
+  services?: string[];
+  status: 'Confirmed' | 'Completed' | 'Cancelled' | 'No-Show';
+  notes?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
 
 
 

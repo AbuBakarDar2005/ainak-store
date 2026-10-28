@@ -81,7 +81,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
           </div>
 
           {/* Free Shipping Progress Indicator */}
-          <div className="px-6 py-3 bg-champagne-50 border-b border-champagne-200 text-xs text-luxury-800">
+          <div className="px-6 py-3 bg-luxury-100 border-b border-luxury-200 text-xs text-luxury-800">
             {subtotal >= 5000 ? (
               <p className="font-semibold text-emerald-800 flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-emerald-600" /> Free express delivery unlocked across Pakistan!
@@ -91,9 +91,9 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 <p className="text-[11px] text-luxury-600 mb-1">
                   Add <strong className="text-luxury-950">{formatCurrency(5000 - subtotal, currency, exchangeRate)}</strong> more for free nationwide shipping.
                 </p>
-                <div className="w-full bg-champagne-200 h-1.5 rounded-full overflow-hidden">
+                <div className="w-full bg-luxury-200 h-1.5 rounded-full overflow-hidden">
                   <div
-                    className="bg-champagne-600 h-full transition-all duration-300"
+                    className="bg-luxury-950 h-full transition-all duration-300"
                     style={{ width: `${Math.min(100, (subtotal / 5000) * 100)}%` }}
                   />
                 </div>
@@ -248,7 +248,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 className="w-full py-3.5 bg-luxury-950 hover:bg-luxury-800 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.99]"
               >
                 <span>Proceed to Checkout</span>
-                <ArrowRight className="w-4 h-4 text-gold" />
+                <ArrowRight className="w-4 h-4 text-white" />
               </button>
             </div>
           )}

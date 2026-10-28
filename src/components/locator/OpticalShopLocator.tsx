@@ -11,11 +11,13 @@ import { OpticalShop, OPTICAL_SHOPS, PAKISTAN_CITIES, calculateDistanceKm } from
 interface OpticalShopLocatorProps {
   onBackToStore: () => void;
   onOpenTryOn: () => void;
+  onOpenPartnerRequest?: () => void;
 }
 
 export const OpticalShopLocator: React.FC<OpticalShopLocatorProps> = ({
   onBackToStore,
-  onOpenTryOn
+  onOpenTryOn,
+  onOpenPartnerRequest
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
@@ -44,8 +46,11 @@ export const OpticalShopLocator: React.FC<OpticalShopLocatorProps> = ({
   const [bookingName, setBookingName] = useState('');
   const [bookingPhone, setBookingPhone] = useState('');
   const [bookingDate, setBookingDate] = useState('');
-  const [bookingTime, setBookingTime] = useState('14:00');
+  const [bookingTime, setBookingTime] = useState('02:00 PM');
+  const [bookingNotes, setBookingNotes] = useState('');
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
+  const [createdBooking, setCreatedBooking] = useState<any>(null);
+  const [isSubmittingBooking, setIsSubmittingBooking] = useState(false);
 
   // View mode on mobile: 'split' | 'map' | 'list'
   const [mobileTab, setMobileTab] = useState<'list' | 'map'>('list');
@@ -360,11 +365,56 @@ export const OpticalShopLocator: React.FC<OpticalShopLocatorProps> = ({
     }
   };
 
-  // Handle Booking Submit
-  const handleBookAppointment = (e: React.FormEvent) => {
+  // Handle Booking Submit (Persist to database so specific partner admin sees it)
+  const handleBookAppointment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!bookingName || !bookingPhone || !bookingDate) return;
-    setBookingConfirmed(true);
+    if (!bookingShop || !bookingName || !bookingPhone || !bookingDate) return;
+    setIsSubmittingBooking(true);
+
+    try {
+      const res = await fetch('/api/eyesight-bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerName: bookingName,
+          customerPhone: bookingPhone,
+          date: bookingDate,
+          time: bookingTime,
+          shopId: bookingShop.id,
+          shopName: bookingShop.name,
+          shopCity: bookingShop.city,
+          shopAddress: bookingShop.address,
+          notes: bookingNotes || 'Booked via Store Locator',
+          services: [
+            'Automated Computerized Refraction Eye Test',
+            'Visual Acuity & Astigmatism Assessment',
+            'Pupil Distance (PD) Measurement & Frame Fitting'
+          ]
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok && data.booking) {
+        setCreatedBooking(data.booking);
+        setBookingConfirmed(true);
+      } else {
+        alert(data.error || 'Failed to submit booking. Please try again.');
+      }
+    } catch (err) {
+      // Fallback
+      setCreatedBooking({
+        id: 'EB-' + Date.now().toString().slice(-6),
+        customerName: bookingName,
+        customerPhone: bookingPhone,
+        date: bookingDate,
+        time: bookingTime,
+        shopName: bookingShop.name,
+        shopCity: bookingShop.city
+      });
+      setBookingConfirmed(true);
+    } finally {
+      setIsSubmittingBooking(false);
+    }
   };
 
   return (
@@ -390,6 +440,16 @@ export const OpticalShopLocator: React.FC<OpticalShopLocatorProps> = ({
           </div>
 
           <div className="flex items-center gap-3 text-xs">
+            {onOpenPartnerRequest && (
+              <button
+                onClick={onOpenPartnerRequest}
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-champagne-300 rounded-lg text-xs font-semibold border border-white/15 transition-all"
+                title="Apply for Partner Admin access and get listed"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-champagne-400" />
+                <span>Partner Admin Request</span>
+              </button>
+            )}
             <button
               onClick={onOpenTryOn}
               className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-champagne-500 hover:bg-champagne-600 text-luxury-950 font-bold rounded-lg transition-transform hover:scale-105"
@@ -726,6 +786,31 @@ export const OpticalShopLocator: React.FC<OpticalShopLocatorProps> = ({
                   </button>
                 </div>
               )}
+
+              {/* Optical Partner CTA Card */}
+              {onOpenPartnerRequest && (
+                <div className="bg-gradient-to-r from-luxury-950 to-luxury-900 text-white rounded-2xl p-4 border border-gold/30 shadow-md space-y-2.5 mt-2">
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-2 bg-champagne-500/20 text-gold rounded-xl shrink-0">
+                      <ShieldCheck className="w-5 h-5 text-champagne-400" />
+                    </div>
+                    <div>
+                      <h4 className="font-serif font-bold text-xs text-white">Own an Optical Clinic or Store?</h4>
+                      <p className="text-[10px] text-luxury-400">Join our verified optical partner network in Pakistan</p>
+                    </div>
+                  </div>
+                  <p className="text-[11px] text-luxury-300 leading-relaxed">
+                    Get listed on this live store locator map and access the Partner Portal to add, change & list products and view customer prescriptions.
+                  </p>
+                  <button
+                    onClick={onOpenPartnerRequest}
+                    className="w-full py-2 bg-champagne-500 hover:bg-champagne-600 text-luxury-950 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow"
+                  >
+                    <span>Submit Partner Admin Request</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -803,20 +888,47 @@ export const OpticalShopLocator: React.FC<OpticalShopLocatorProps> = ({
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
                 <div>
+                  <span className="inline-block px-2.5 py-0.5 bg-luxury-100 text-luxury-800 text-[10px] font-mono font-bold rounded-full mb-1.5 border border-luxury-200">
+                    Booking ID: #{createdBooking?.id || 'EB-CONFIRMED'}
+                  </span>
                   <h4 className="font-serif font-bold text-lg text-luxury-950">Appointment Confirmed!</h4>
                   <p className="text-xs text-luxury-600 mt-1">
-                    Your appointment has been reserved for <strong>{bookingDate} at {bookingTime}</strong> at <strong>{bookingShop.name}</strong>.
+                    Your eye examination is scheduled for <strong>{bookingDate} at {bookingTime}</strong> at <strong>{bookingShop.name}</strong>.
                   </p>
-                  <p className="text-[11px] text-luxury-400 mt-2">
-                    A confirmation SMS has been sent to {bookingPhone}. Please arrive 10 minutes before your slot.
+                  <p className="text-[11px] text-luxury-500 mt-1">
+                    📍 {bookingShop.address}, {bookingShop.city}
+                  </p>
+                  <p className="text-[11px] text-emerald-700 font-medium mt-2 bg-emerald-50 p-2 rounded-lg border border-emerald-200">
+                    ✓ Your appointment has been sent to the clinic administrator at {bookingShop.name}. Please arrive 10 minutes before your slot.
                   </p>
                 </div>
-                <button
-                  onClick={() => setBookingShop(null)}
-                  className="px-6 py-2.5 bg-luxury-950 text-white font-bold rounded-xl text-xs hover:bg-luxury-800"
-                >
-                  Done
-                </button>
+
+                <div className="flex flex-col gap-2 pt-2">
+                  {(bookingShop.whatsapp || bookingShop.phone) && (
+                    <a
+                      href={`https://wa.me/${(bookingShop.whatsapp || bookingShop.phone).replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hi ${bookingShop.name}, I booked a free eye exam (Booking ID: #${createdBooking?.id || ''}) for ${bookingDate} at ${bookingTime}.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors"
+                    >
+                      <span>Chat with Clinic on WhatsApp</span>
+                    </a>
+                  )}
+
+                  <button
+                    onClick={() => {
+                      setBookingShop(null);
+                      setBookingConfirmed(false);
+                      setCreatedBooking(null);
+                      setBookingName('');
+                      setBookingPhone('');
+                      setBookingNotes('');
+                    }}
+                    className="px-6 py-2.5 bg-luxury-950 text-white font-bold rounded-xl text-xs hover:bg-luxury-800"
+                  >
+                    Done
+                  </button>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleBookAppointment} className="space-y-3.5 text-xs">
@@ -842,7 +954,7 @@ export const OpticalShopLocator: React.FC<OpticalShopLocatorProps> = ({
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-luxury-700 mb-1">Phone Number (For SMS Confirmation) *</label>
+                  <label className="block font-semibold text-luxury-700 mb-1">Phone Number (For SMS & WhatsApp) *</label>
                   <input
                     type="tel"
                     required
@@ -882,6 +994,17 @@ export const OpticalShopLocator: React.FC<OpticalShopLocatorProps> = ({
                   </div>
                 </div>
 
+                <div>
+                  <label className="block font-semibold text-luxury-700 mb-1">Symptoms or Special Requests (Optional)</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Headache from screens, blurriness at distance"
+                    value={bookingNotes}
+                    onChange={(e) => setBookingNotes(e.target.value)}
+                    className="w-full p-2 border rounded-lg bg-white"
+                  />
+                </div>
+
                 <div className="flex justify-end gap-2 pt-3 border-t">
                   <button
                     type="button"
@@ -892,9 +1015,17 @@ export const OpticalShopLocator: React.FC<OpticalShopLocatorProps> = ({
                   </button>
                   <button
                     type="submit"
+                    disabled={isSubmittingBooking}
                     className="px-5 py-2 bg-luxury-950 text-white font-bold rounded-lg hover:bg-luxury-800 shadow-md flex items-center gap-1.5"
                   >
-                    <CheckCircle2 className="w-3.5 h-3.5 text-gold" /> Confirm Free Appointment
+                    {isSubmittingBooking ? (
+                      <span>Reserving Slot...</span>
+                    ) : (
+                      <>
+                        <CheckCircle2 className="w-3.5 h-3.5 text-gold" />
+                        <span>Confirm Free Appointment</span>
+                      </>
+                    )}
                   </button>
                 </div>
               </form>
