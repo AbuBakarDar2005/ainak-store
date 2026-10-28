@@ -156,23 +156,24 @@ export const Footer: React.FC<FooterProps> = ({
             </ul>
           </div>
 
-          {/* Legal & Compliance (Checklist #1, #2, #12) */}
+          {/* Legal & Compliance */}
           <div className="space-y-3">
-            <h5 className="font-bold uppercase tracking-wider text-white text-[11px]">Assurance</h5>
+            <h5 className="font-bold uppercase tracking-wider text-white text-[11px]">Assurance & Portals</h5>
             <ul className="space-y-2 text-luxury-400">
               <li>
                 <button onClick={onOpenPrivacy} className="hover:text-white transition-colors">
-                  Privacy Policy (Checklist #1)
+                  Privacy Policy
                 </button>
               </li>
               <li>
                 <button onClick={onOpenTerms} className="hover:text-white transition-colors">
-                  Terms & Conditions (Checklist #2)
+                  Terms & Conditions
                 </button>
               </li>
               <li>
-                <button onClick={onOpenAdmin} className="hover:text-white transition-colors">
-                  Admin Control Portal
+                <button onClick={onOpenAdmin} className="hover:text-white transition-colors flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-gold-400" />
+                  <span>Admin Control Portal</span>
                 </button>
               </li>
               {onOpenPartnerRequest && (
@@ -194,8 +195,33 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-luxury-500 gap-4">
-          <p>© {currentYear} NEXT VISION. Handcrafted in Pakistan. All rights reserved.</p>
+        <div className="pt-8 border-t border-luxury-900/60 flex flex-col lg:flex-row items-center justify-between text-[11px] text-luxury-500 gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
+            <p>© {currentYear} NEXT VISION. Handcrafted in Pakistan. All rights reserved.</p>
+            <span className="hidden sm:inline text-luxury-800">•</span>
+            {/* Bottom Admin & Partner Portal Access */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={onOpenAdmin}
+                className="inline-flex items-center gap-1 text-luxury-400 hover:text-white transition-colors px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-medium"
+                title="Admin Control Portal"
+              >
+                <ShieldCheck className="w-3 h-3 text-gold-400" />
+                <span>Admin Login</span>
+              </button>
+              {onOpenPartnerRequest && (
+                <button
+                  onClick={onOpenPartnerRequest}
+                  className="inline-flex items-center gap-1 text-luxury-300 hover:text-white transition-colors px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 border border-white/10 text-[10px] font-medium"
+                  title="Apply for Partner Store Admin Access"
+                >
+                  <span>Partner Request</span>
+                  <span className="text-[9px] bg-gold-400/20 text-gold-300 border border-gold-400/30 px-1 py-0.2 rounded font-bold">Apply</span>
+                </button>
+              )}
+            </div>
+          </div>
+
           <div className="flex items-center gap-3">
             <span className="px-2 py-1 rounded bg-white/5 text-luxury-400 font-mono text-[10px]">
               Cash on Delivery (COD)

@@ -85,25 +85,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Globe className="w-3 h-3 text-zinc-400" />
             <span className="font-bold">{currency}</span>
           </button>
-          <span className="text-luxury-700">|</span>
-          {onOpenPartnerRequest && (
-            <>
-              <button
-                onClick={onOpenPartnerRequest}
-                className="text-zinc-200 hover:text-white transition-colors flex items-center gap-1 font-semibold text-[10px] bg-white/10 hover:bg-white/15 px-2 py-0.5 rounded-full"
-                title="Apply for Partner Admin access"
-              >
-                <span>Partner Request</span>
-              </button>
-              <span className="text-luxury-700">|</span>
-            </>
-          )}
-          <button
-            onClick={onOpenAdmin}
-            className="text-luxury-400 hover:text-white transition-colors flex items-center gap-1"
-          >
-            <Shield className="w-3 h-3" /> Admin
-          </button>
         </div>
       </div>
 
@@ -301,23 +282,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <Globe className="w-3.5 h-3.5 text-zinc-600" />
                   <span>Currency: {currency}</span>
                 </button>
-
-                <div className="flex items-center gap-3">
-                  {onOpenPartnerRequest && (
-                    <button
-                      onClick={() => { onOpenPartnerRequest(); setMobileMenuOpen(false); }}
-                      className="text-zinc-800 hover:text-zinc-950 font-semibold"
-                    >
-                      Partner Request
-                    </button>
-                  )}
-                  <button
-                    onClick={() => { onOpenAdmin(); setMobileMenuOpen(false); }}
-                    className="text-luxury-500 hover:text-luxury-950 font-medium"
-                  >
-                    Admin Portal
-                  </button>
-                </div>
               </div>
             </div>
           </div>
