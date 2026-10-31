@@ -258,11 +258,24 @@ export const OpticalShopLocator: React.FC<OpticalShopLocatorProps> = ({
       map.flyTo([selectedShop.lat, selectedShop.lng], 14, { duration: 0.8 });
       marker.openPopup();
     } else if (filteredShops.length > 0 && !selectedShop) {
-      // Fit bounds to show all markers
+      // Fit bounds to show all markers safely
       const group = L.featureGroup(Object.values(markersRef.current));
-      map.fitBounds(group.getBounds().pad(0.15), { maxZoom: 14 });
+      const bounds = group.getBounds();
+      if (bounds.isValid()) {
+        map.fitBounds(bounds.pad(0.15), { maxZoom: 14 });
+      }
     }
   }, [filteredShops, selectedShop]);
+
+  // Invalidate map size when toggling between list and map tabs on mobile
+  useEffect(() => {
+    if (mobileTab === 'map' && mapInstanceRef.current) {
+      const timer = setTimeout(() => {
+        mapInstanceRef.current?.invalidateSize();
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [mobileTab]);
 
   // Handle Geolocation "Near Me"
   const handleLocateMe = () => {

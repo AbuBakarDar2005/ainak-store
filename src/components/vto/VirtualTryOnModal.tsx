@@ -144,7 +144,7 @@ export const VirtualTryOnModal: React.FC<VirtualTryOnModalProps> = ({
       streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.play();
+        videoRef.current.play().catch(e => console.warn("Video play aborted or failed:", e));
       }
       setWebcamActive(true);
     } catch (err: any) {
@@ -191,9 +191,6 @@ export const VirtualTryOnModal: React.FC<VirtualTryOnModalProps> = ({
 
       const centerX = width * 0.5;
       const centerY = height * 0.42 + subtleWobbleY + verticalOffset * 2;
-
-      // Pupillary distance calculation
-      setDetectedPD(63 + Math.round(Math.sin(t) * 1));
 
       if (threeSceneRef.current && !isBeforeAfter && !is360Inspect && selectedProduct) {
         try {

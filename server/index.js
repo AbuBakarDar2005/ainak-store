@@ -46,6 +46,7 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static(uploadsDir));
+app.use('/api/uploads', express.static(uploadsDir));
 
 // Checklist #14: Rate-limiting middleware
 const apiLimiter = rateLimit({
@@ -64,6 +65,9 @@ const aiLimiter = rateLimit({
 
 // Middleware: Normalize incoming Vercel serverless URLs
 app.use((req, res, next) => {
+  if (req.url.startsWith('/uploads') || req.url.startsWith('/api/uploads')) {
+    return next();
+  }
   if (!req.url.startsWith('/api')) {
     req.url = '/api' + (req.url.startsWith('/') ? req.url : '/' + req.url);
   }
@@ -117,24 +121,31 @@ app.get('/api/products', (req, res) => {
   const { category, shape, gender, search, maxPrice } = req.query;
 
   if (category && category !== 'All') {
-    products = products.filter(p => p.category.toLowerCase() === String(category).toLowerCase());
+    const catLower = String(category).toLowerCase().trim();
+    products = products.filter(p => p.category && p.category.toLowerCase().trim() === catLower);
   }
   if (shape && shape !== 'All') {
-    products = products.filter(p => p.frameShape.toLowerCase() === String(shape).toLowerCase());
+    const shapeLower = String(shape).toLowerCase().trim();
+    products = products.filter(p => p.frameShape && p.frameShape.toLowerCase().trim() === shapeLower);
   }
   if (gender && gender !== 'All') {
-    products = products.filter(p => p.gender.toLowerCase() === String(gender).toLowerCase() || p.gender === 'Unisex');
+    const genLower = String(gender).toLowerCase().trim();
+    products = products.filter(p => (p.gender && p.gender.toLowerCase().trim() === genLower) || p.gender === 'Unisex');
   }
   if (maxPrice) {
-    products = products.filter(p => (p.salePrice || p.basePrice) <= Number(maxPrice));
+    const priceLimit = Number(maxPrice);
+    if (!isNaN(priceLimit)) {
+      products = products.filter(p => (Number(p.salePrice) || Number(p.basePrice) || 0) <= priceLimit);
+    }
   }
   if (search) {
-    const q = String(search).toLowerCase();
+    const q = String(search).toLowerCase().trim();
     products = products.filter(p =>
-      p.title.toLowerCase().includes(q) ||
-      p.description.toLowerCase().includes(q) ||
-      p.material.toLowerCase().includes(q) ||
-      p.frameShape.toLowerCase().includes(q)
+      (p.title && p.title.toLowerCase().includes(q)) ||
+      (p.description && p.description.toLowerCase().includes(q)) ||
+      (p.material && p.material.toLowerCase().includes(q)) ||
+      (p.frameShape && p.frameShape.toLowerCase().includes(q)) ||
+      (p.sku && p.sku.toLowerCase().includes(q))
     );
   }
 
@@ -298,18 +309,29 @@ app.post('/api/orders', async (req, res) => {
 
   const settings = db.getSettings();
   let subtotal = 0;
-  items.forEach(item => {
-    const itemLensPrice = item.lensOption?.price || 0;
-    subtotal += (item.price + itemLensPrice) * (item.quantity || 1);
+  (items || []).forEach(item => {
+    const itemBasePrice = typeof item.price === 'number' && !isNaN(item.price)
+      ? item.price
+      : (Number(item.price) || 0);
+    const itemLensPrice = Number(item.lensOption?.price) || 0;
+    const qty = Math.max(1, parseInt(item.quantity, 10) || 1);
+    subtotal += (itemBasePrice + itemLensPrice) * qty;
   });
 
-  const shippingFee = subtotal >= settings.freeShippingThreshold ? 0 : settings.shippingFee;
-  const total = subtotal + shippingFee;
+  const discountPercent = Math.max(0, Math.min(100, Number(req.body.discountPercent) || 0));
+  const discountAmount = discountPercent > 0 ? Math.round(subtotal * (discountPercent / 100)) : 0;
+  const netSubtotal = Math.max(0, subtotal - discountAmount);
+
+  const shippingFee = netSubtotal >= settings.freeShippingThreshold ? 0 : settings.shippingFee;
+  const total = netSubtotal + shippingFee;
 
   const order = db.createOrder({
     customer,
     items,
-    subtotal,
+    subtotal: netSubtotal,
+    rawSubtotal: subtotal,
+    discount: discountAmount,
+    discountPercent,
     shippingFee,
     total,
     paymentMethod: paymentMethod || 'Cash on Delivery (COD)',
@@ -432,7 +454,7 @@ app.post('/api/ai/chat', aiLimiter, async (req, res) => {
   if (GEMINI_API_KEY && GEMINI_API_KEY.length > 10) {
     try {
       const catalogSummary = products.map(p => 
-        `- ID: ${p.id}, "${p.title}" (${p.frameShape}, ${p.category}, Rs. ${p.salePrice || p.basePrice}, Recommended for: ${p.faceShapesRecommended.join(', ')})`
+        `- ID: ${p.id}, "${p.title}" (${p.frameShape || 'Optical'}, ${p.category || 'Eyewear'}, Rs. ${p.salePrice || p.basePrice || 0}, Recommended for: ${(p.faceShapesRecommended || []).join(', ')})`
       ).join('\n');
 
       const systemPrompt = `${OPTICAL_KNOWLEDGE}\n\nCurrent Store Catalog:\n${catalogSummary}\n\nClient Face Shape: ${faceShape || 'Unspecified'}`;
@@ -778,12 +800,14 @@ app.put('/api/admin/settings', authenticateAdmin, requireSuperAdmin, (req, res) 
 
 // Public: Get all active lens categories for user customization
 app.get('/api/lens-types', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   const categories = db.getLensCategories(true);
   res.json({ categories });
 });
 
 // Admin: Get all lens categories (active & inactive)
 app.get('/api/admin/lens-types', authenticateAdmin, (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   const categories = db.getLensCategories(false);
   res.json({ categories });
 });
@@ -906,7 +930,7 @@ app.patch('/api/admin/eyesight-bookings/:id/status', authenticateAdmin, (req, re
   if (req.admin.role !== 'superadmin') {
     const partnerAdmin = db.getPartnerAdminWithAuth(req.admin.username);
     const clinicStoreName = partnerAdmin?.storeName || req.admin.storeName || '';
-    if (booking.shopName.toLowerCase().trim() !== clinicStoreName.toLowerCase().trim()) {
+    if ((booking.shopName || '').toLowerCase().trim() !== clinicStoreName.toLowerCase().trim()) {
       return res.status(403).json({ error: 'Unauthorized: You can only update bookings for your own clinic' });
     }
   }
@@ -931,7 +955,7 @@ app.delete('/api/admin/eyesight-bookings/:id', authenticateAdmin, (req, res) => 
   if (req.admin.role !== 'superadmin') {
     const partnerAdmin = db.getPartnerAdminWithAuth(req.admin.username);
     const clinicStoreName = partnerAdmin?.storeName || req.admin.storeName || '';
-    if (booking.shopName.toLowerCase().trim() !== clinicStoreName.toLowerCase().trim()) {
+    if ((booking.shopName || '').toLowerCase().trim() !== clinicStoreName.toLowerCase().trim()) {
       return res.status(403).json({ error: 'Unauthorized: You can only delete bookings for your own clinic' });
     }
   }

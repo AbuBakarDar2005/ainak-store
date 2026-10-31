@@ -306,12 +306,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
         setPartnerStores(validStores);
       }
 
-      // 7. Lens Categories & Types (Live Store Configuration)
+      // 7. Lens Categories & Types (SuperAdmin Live Store Configuration with Auth & No-Cache)
       try {
-        const lensRes = await fetch('/api/lens-types');
+        const lensRes = await fetch(`/api/admin/lens-types?_t=${Date.now()}`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {}
+        });
         if (lensRes.ok) {
           const lensData = await lensRes.json();
           setLensCategories(lensData.categories || []);
+        } else {
+          // Fallback if public endpoint
+          const pubRes = await fetch(`/api/lens-types?_t=${Date.now()}`);
+          if (pubRes.ok) {
+            const pubData = await pubRes.json();
+            setLensCategories(pubData.categories || []);
+          }
         }
       } catch (lensErr) {
         console.warn("Could not fetch lens categories:", lensErr);
@@ -1054,28 +1063,69 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
     }
   };
 
+  const handleToggleLensCategoryStatus = async (cat: LensCategory) => {
+    const nextStatus = cat.isActive === false ? true : false;
+    // Optimistic UI update
+    setLensCategories(prev => prev.map(c => c.id === cat.id ? { ...c, isActive: nextStatus } : c));
+    try {
+      const res = await fetch(`/api/admin/lens-types/${cat.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ ...cat, isActive: nextStatus })
+      });
+      if (res.ok) {
+        setLensCategoryStatus({
+          text: `Lens Category "${cat.name}" is now ${nextStatus ? 'Active' : 'Inactive'}.`,
+          isError: false
+        });
+      } else {
+        fetchAdminData();
+      }
+    } catch {
+      fetchAdminData();
+    }
+  };
+
   const handleDeleteLensCategory = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to remove the lens category "${name}" from customer options?`)) {
+    if (!confirm(`Are you sure you want to permanently delete the lens category "${name}"?`)) {
       return;
     }
+
+    // 1. Optimistic removal - category immediately disappears from UI
+    setLensCategories(prev => prev.filter(c => c.id !== id));
 
     try {
       const res = await fetch(`/api/admin/lens-types/${id}`, {
         method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          'Cache-Control': 'no-cache'
+        }
       });
       const data = await res.json();
       if (res.ok) {
         setLensCategoryStatus({
-          text: `Lens Category "${name}" was deleted.`,
+          text: `Lens Category "${name}" was permanently removed.`,
           isError: false
         });
-        fetchAdminData();
+        // 2. Fetch fresh list from server with timestamp to prevent stale cache
+        const freshRes = await fetch(`/api/admin/lens-types?_t=${Date.now()}`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {}
+        });
+        if (freshRes.ok) {
+          const freshData = await freshRes.json();
+          setLensCategories(freshData.categories || []);
+        }
       } else {
         alert(data.error || "Failed to delete lens category.");
+        fetchAdminData();
       }
     } catch (err: any) {
       alert(`Network error: ${err.message}`);
+      fetchAdminData();
     }
   };
 
@@ -3785,15 +3835,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
                         {cat.badge || 'Precision Optics'}
                       </span>
                       <div className="flex items-center gap-1.5">
-                        {cat.isActive !== false ? (
-                          <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full flex items-center gap-1 border border-emerald-200">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active
-                          </span>
-                        ) : (
-                          <span className="text-[10px] font-semibold text-luxury-500 bg-luxury-100 px-2 py-0.5 rounded-full">
-                            Inactive
-                          </span>
-                        )}
+                        <button
+                          type="button"
+                          onClick={() => handleToggleLensCategoryStatus(cat)}
+                          className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 transition-all cursor-pointer ${
+                            cat.isActive !== false
+                              ? 'text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300'
+                              : 'text-zinc-600 bg-zinc-100 hover:bg-zinc-200 border border-zinc-300'
+                          }`}
+                          title={cat.isActive !== false ? "Click to deactivate (hide from customers)" : "Click to activate (show to customers)"}
+                        >
+                          <span className={`w-1.5 h-1.5 rounded-full ${cat.isActive !== false ? 'bg-emerald-500 animate-pulse' : 'bg-zinc-400'}`}></span>
+                          <span>{cat.isActive !== false ? 'Active' : 'Inactive'}</span>
+                        </button>
                       </div>
                     </div>
 

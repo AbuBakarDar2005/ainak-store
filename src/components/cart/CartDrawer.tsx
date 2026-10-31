@@ -9,7 +9,7 @@ interface CartDrawerProps {
   cart: CartItem[];
   onUpdateQuantity: (itemId: string, newQty: number) => void;
   onRemoveItem: (itemId: string) => void;
-  onProceedToCheckout: () => void;
+  onProceedToCheckout: (discountPercent?: number, promoCode?: string) => void;
   currency: 'PKR' | 'USD';
   exchangeRate: number;
 }
@@ -244,7 +244,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
               {/* Checkout Action Button */}
               <button
-                onClick={onProceedToCheckout}
+                onClick={() => onProceedToCheckout(discountPercent, promoCode)}
                 className="w-full py-3.5 bg-luxury-950 hover:bg-luxury-800 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.99]"
               >
                 <span>Proceed to Checkout</span>

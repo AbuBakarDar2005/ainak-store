@@ -49,11 +49,51 @@ export function App() {
     }
   });
 
-  // Routing State: 'store' | 'admin' | 'privacy' | 'terms' | '404' | 'locator'
   const [currentView, setCurrentView] = useState<'store' | 'admin' | 'privacy' | 'terms' | '404' | 'locator'>('store');
   const [adminAuthMode, setAdminAuthMode] = useState<'login' | 'register'>('login');
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [currency, setCurrency] = useState<'PKR' | 'USD'>('PKR');
+  const [appliedDiscount, setAppliedDiscount] = useState<{ percent: number; code: string }>({ percent: 0, code: '' });
+
+  // Browser History Navigation
+  const navigateToView = (view: 'store' | 'admin' | 'privacy' | 'terms' | '404' | 'locator', pushState = true) => {
+    setCurrentView(view);
+    if (pushState) {
+      const pathMap: Record<string, string> = {
+        store: '/',
+        admin: '/admin',
+        privacy: '/privacy',
+        terms: '/terms',
+        locator: '/stores',
+        '404': '/404'
+      };
+      const targetPath = pathMap[view] || '/';
+      if (window.location.pathname !== targetPath) {
+        window.history.pushState({ view }, '', targetPath);
+      }
+    }
+  };
+
+  // Listen to browser Back/Forward navigation
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      const stateView = e.state?.view;
+      if (stateView) {
+        setCurrentView(stateView);
+      } else {
+        const path = window.location.pathname;
+        if (path === '/admin') setCurrentView('admin');
+        else if (path === '/privacy') setCurrentView('privacy');
+        else if (path === '/terms') setCurrentView('terms');
+        else if (path === '/stores' || path === '/locator') setCurrentView('locator');
+        else if (path === '/' || path === '' || path === '/index.html') setCurrentView('store');
+        else setCurrentView('404');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Modals
   const [isTryOnOpen, setIsTryOnOpen] = useState(false);
@@ -100,7 +140,7 @@ export function App() {
       .catch(err => console.warn("Failed to load store settings:", err));
 
     // Fetch lens categories
-    fetch('/api/lens-types')
+    fetch(`/api/lens-types?_t=${Date.now()}`)
       .then(res => res.json())
       .then(data => {
         if (data.categories) setLensCategories(data.categories);
@@ -113,6 +153,7 @@ export function App() {
     else if (path === '/privacy') setCurrentView('privacy');
     else if (path === '/terms') setCurrentView('terms');
     else if (path === '/stores' || path === '/locator') setCurrentView('locator');
+    else if (path !== '/' && path !== '' && path !== '/index.html') setCurrentView('404');
   }, []);
 
   // Cart Handlers
@@ -184,19 +225,19 @@ export function App() {
 
   const handleOpenAdminLogin = () => {
     setAdminAuthMode('login');
-    setCurrentView('admin');
+    navigateToView('admin');
   };
 
   const handleOpenPartnerRequest = () => {
     setAdminAuthMode('register');
-    setCurrentView('admin');
+    navigateToView('admin');
   };
 
   // View: Admin Portal
   if (currentView === 'admin') {
     return (
       <AdminDashboard
-        onExit={() => setCurrentView('store')}
+        onExit={() => navigateToView('store')}
         currency={currency}
         exchangeRate={exchangeRate}
         initialAuthMode={adminAuthMode}
@@ -211,12 +252,12 @@ export function App() {
         cartCount={cart.reduce((total, i) => total + i.quantity, 0)}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenTryOn={() => handleLaunchTryOn()}
-        onOpenLocator={() => setCurrentView('locator')}
+        onOpenLocator={() => navigateToView('locator')}
         currency={currency}
         onToggleCurrency={() => setCurrency(currency === 'PKR' ? 'USD' : 'PKR')}
         onSelectCategory={(cat) => {
           setActiveCategory(cat);
-          setCurrentView('store');
+          navigateToView('store');
         }}
         activeCategory={activeCategory}
         onOpenAdmin={handleOpenAdminLogin}
@@ -247,29 +288,29 @@ export function App() {
               selectedCategory={activeCategory}
               onSelectCategory={setActiveCategory}
             />
-            <StoreLocatorTeaser onOpenLocator={() => setCurrentView('locator')} />
+            <StoreLocatorTeaser onOpenLocator={() => navigateToView('locator')} />
           </>
         )}
 
         {currentView === 'locator' && (
           <OpticalShopLocator
-            onBackToStore={() => setCurrentView('store')}
+            onBackToStore={() => navigateToView('store')}
             onOpenTryOn={() => handleLaunchTryOn()}
             onOpenPartnerRequest={handleOpenPartnerRequest}
           />
         )}
 
         {currentView === 'privacy' && (
-          <PrivacyPolicy onBack={() => setCurrentView('store')} />
+          <PrivacyPolicy onBack={() => navigateToView('store')} />
         )}
 
         {currentView === 'terms' && (
-          <TermsConditions onBack={() => setCurrentView('store')} />
+          <TermsConditions onBack={() => navigateToView('store')} />
         )}
 
         {currentView === '404' && (
           <NotFound
-            onGoHome={() => setCurrentView('store')}
+            onGoHome={() => navigateToView('store')}
             onSearch={handleSearch}
           />
         )}
@@ -277,14 +318,14 @@ export function App() {
 
       {/* Footer */}
       <Footer
-        onOpenPrivacy={() => setCurrentView('privacy')}
-        onOpenTerms={() => setCurrentView('terms')}
+        onOpenPrivacy={() => navigateToView('privacy')}
+        onOpenTerms={() => navigateToView('terms')}
         onSelectCategory={(cat) => {
           setActiveCategory(cat);
-          setCurrentView('store');
+          navigateToView('store');
         }}
         onOpenTryOn={() => handleLaunchTryOn()}
-        onOpenLocator={() => setCurrentView('locator')}
+        onOpenLocator={() => navigateToView('locator')}
         onOpenAdmin={handleOpenAdminLogin}
         onOpenPartnerRequest={handleOpenPartnerRequest}
         settings={settings}
@@ -329,7 +370,8 @@ export function App() {
         cart={cart}
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveItem={handleRemoveItem}
-        onProceedToCheckout={() => {
+        onProceedToCheckout={(discountPercent = 0, promoCode = '') => {
+          setAppliedDiscount({ percent: discountPercent, code: promoCode });
           setIsCartOpen(false);
           setIsCheckoutOpen(true);
         }}
@@ -346,6 +388,8 @@ export function App() {
           onOrderSuccess={handleOrderSuccess}
           currency={currency}
           exchangeRate={exchangeRate}
+          discountPercent={appliedDiscount.percent}
+          promoCode={appliedDiscount.code}
         />
       )}
 

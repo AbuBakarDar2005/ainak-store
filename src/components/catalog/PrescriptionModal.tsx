@@ -162,12 +162,12 @@ export const PrescriptionModal: React.FC<PrescriptionModalProps> = ({
 
   // Fetch updated categories if Main Admin renamed or modified them
   useEffect(() => {
-    fetch('/api/lens-types')
+    fetch(`/api/lens-types?_t=${Date.now()}`)
       .then(res => res.json())
       .then(data => {
-        if (data.categories && data.categories.length > 0) {
+        if (data.categories && Array.isArray(data.categories)) {
           setCategories(data.categories);
-          if (!data.categories.find((c: LensCategory) => c.id === selectedCategory?.id)) {
+          if (data.categories.length > 0 && !data.categories.find((c: LensCategory) => c.id === selectedCategory?.id)) {
             setSelectedCategory(data.categories[0]);
           }
         }
@@ -176,8 +176,11 @@ export const PrescriptionModal: React.FC<PrescriptionModalProps> = ({
   }, [isOpen]);
 
   useEffect(() => {
-    if (externalCategories && externalCategories.length > 0) {
+    if (externalCategories && Array.isArray(externalCategories)) {
       setCategories(externalCategories);
+      if (externalCategories.length > 0 && !externalCategories.find((c: LensCategory) => c.id === selectedCategory?.id)) {
+        setSelectedCategory(externalCategories[0]);
+      }
     }
   }, [externalCategories]);
 
@@ -193,10 +196,12 @@ export const PrescriptionModal: React.FC<PrescriptionModalProps> = ({
 
   if (!isOpen) return null;
 
+  const activeCategory = selectedCategory || categories[0] || DEFAULT_LENS_CATEGORIES[0];
+
   // Calculate Effective Price
-  const baseLensPrice = selectedCategory.price || 0;
-  const addonPrice = (selectedCategory.supportsPhotochromicToggle && photochromicToggle)
-    ? (selectedCategory.photochromicAddonPrice || 1200)
+  const baseLensPrice = activeCategory.price || 0;
+  const addonPrice = (activeCategory.supportsPhotochromicToggle && photochromicToggle)
+    ? (activeCategory.photochromicAddonPrice || 1200)
     : 0;
   const effectiveLensPrice = baseLensPrice + addonPrice;
   const totalItemPrice = (product.salePrice || product.basePrice) + effectiveLensPrice;
@@ -219,18 +224,18 @@ export const PrescriptionModal: React.FC<PrescriptionModalProps> = ({
   };
 
   const handleConfirm = () => {
-    let formattedType = selectedCategory.name;
-    if (selectedCategory.supportsPhotochromicToggle) {
+    let formattedType = activeCategory.name;
+    if (activeCategory.supportsPhotochromicToggle) {
       formattedType += photochromicToggle
         ? ` [With Photochromic - ${selectedTint} Tint]`
         : ' [Without Photochromic - Clear HD]';
-    } else if (selectedCategory.supportsPhotochromicTints) {
+    } else if (activeCategory.supportsPhotochromicTints) {
       formattedType += ` [Sun Tint: ${selectedTint}]`;
     }
 
-    const hasPhotochromic = selectedCategory.supportsPhotochromicToggle
+    const hasPhotochromic = activeCategory.supportsPhotochromicToggle
       ? photochromicToggle
-      : Boolean(selectedCategory.supportsPhotochromicTints);
+      : Boolean(activeCategory.supportsPhotochromicTints);
 
     const isZeroPower = prescriptionType.includes('Zero Power');
 
@@ -253,8 +258,8 @@ export const PrescriptionModal: React.FC<PrescriptionModalProps> = ({
     onClose();
   };
 
-  const showTintSelector = (selectedCategory.supportsPhotochromicTints && !selectedCategory.supportsPhotochromicToggle) ||
-    (selectedCategory.supportsPhotochromicToggle && photochromicToggle);
+  const showTintSelector = (activeCategory.supportsPhotochromicTints && !activeCategory.supportsPhotochromicToggle) ||
+    (activeCategory.supportsPhotochromicToggle && photochromicToggle);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-luxury-950/80 backdrop-blur-md animate-fade-in">

@@ -541,12 +541,14 @@ class Database {
         const raw = fs.readFileSync(DB_PATH, 'utf-8');
         const parsed = JSON.parse(raw);
         parsed.settings = { ...INITIAL_SETTINGS, ...(parsed.settings || {}) };
-        parsed.partnerStores = (parsed.partnerStores || []).filter(s => s.isAdminAdded);
+        parsed.partnerStores = (parsed.partnerStores && parsed.partnerStores.length > 0)
+          ? parsed.partnerStores.filter(s => s && s.isAdminAdded)
+          : JSON.parse(JSON.stringify(INITIAL_PARTNER_STORES));
         parsed.partnerAdmins = parsed.partnerAdmins || [];
-        parsed.lensCategories = (parsed.lensCategories && parsed.lensCategories.length > 0)
+        parsed.lensCategories = Array.isArray(parsed.lensCategories)
           ? parsed.lensCategories
           : JSON.parse(JSON.stringify(INITIAL_LENS_CATEGORIES));
-        parsed.eyesightBookings = (parsed.eyesightBookings && parsed.eyesightBookings.length > 0)
+        parsed.eyesightBookings = Array.isArray(parsed.eyesightBookings)
           ? parsed.eyesightBookings
           : JSON.parse(JSON.stringify(INITIAL_EYESIGHT_BOOKINGS));
         if (!parsed.admin) {
@@ -1018,18 +1020,19 @@ class Database {
 
   // --- Partner Stores (Strictly Admin-Added Only) ---
   getPartnerStores(query = {}) {
-    let stores = (this.data.partnerStores || []).filter(s => s.isAdminAdded === true);
+    let stores = (this.data.partnerStores || []).filter(s => s && s.isAdminAdded === true);
     const { city, search } = query;
     if (city && city !== 'All') {
-      stores = stores.filter(s => s.city.toLowerCase() === String(city).toLowerCase());
+      const targetCity = String(city).toLowerCase().trim();
+      stores = stores.filter(s => s.city && s.city.toLowerCase().trim() === targetCity);
     }
     if (search) {
-      const q = String(search).toLowerCase();
+      const q = String(search).toLowerCase().trim();
       stores = stores.filter(s =>
-        s.name.toLowerCase().includes(q) ||
-        s.address.toLowerCase().includes(q) ||
-        s.city.toLowerCase().includes(q) ||
-        (s.services && s.services.some(svc => svc.toLowerCase().includes(q)))
+        (s.name && s.name.toLowerCase().includes(q)) ||
+        (s.address && s.address.toLowerCase().includes(q)) ||
+        (s.city && s.city.toLowerCase().includes(q)) ||
+        (Array.isArray(s.services) && s.services.some(svc => typeof svc === 'string' && svc.toLowerCase().includes(q)))
       );
     }
     return stores;
@@ -1099,7 +1102,7 @@ class Database {
 
   // --- Lens Categories & Optics Management (Main Admin Customizable) ---
   getLensCategories(activeOnly = false) {
-    if (!this.data.lensCategories || this.data.lensCategories.length === 0) {
+    if (!Array.isArray(this.data.lensCategories)) {
       this.data.lensCategories = JSON.parse(JSON.stringify(INITIAL_LENS_CATEGORIES));
       this.save();
     }
@@ -1115,7 +1118,7 @@ class Database {
   }
 
   addLensCategory(categoryData) {
-    if (!this.data.lensCategories) this.data.lensCategories = JSON.parse(JSON.stringify(INITIAL_LENS_CATEGORIES));
+    if (!Array.isArray(this.data.lensCategories)) this.data.lensCategories = [];
     const newCategory = {
       id: 'lens-' + Date.now(),
       name: categoryData.name?.trim() || 'New Optical Lens Category',
@@ -1139,7 +1142,7 @@ class Database {
   }
 
   updateLensCategory(id, categoryData) {
-    if (!this.data.lensCategories) this.data.lensCategories = JSON.parse(JSON.stringify(INITIAL_LENS_CATEGORIES));
+    if (!Array.isArray(this.data.lensCategories)) this.data.lensCategories = [];
     const index = this.data.lensCategories.findIndex(lc => lc.id === id);
     if (index === -1) return null;
 
@@ -1160,7 +1163,7 @@ class Database {
   }
 
   deleteLensCategory(id) {
-    if (!this.data.lensCategories) this.data.lensCategories = JSON.parse(JSON.stringify(INITIAL_LENS_CATEGORIES));
+    if (!Array.isArray(this.data.lensCategories)) this.data.lensCategories = [];
     const initialLen = this.data.lensCategories.length;
     this.data.lensCategories = this.data.lensCategories.filter(lc => lc.id !== id);
     this.save();
@@ -1203,7 +1206,11 @@ class Database {
       );
     }
 
-    return list.sort((a, b) => new Date(b.createdAt || b.date).getTime() - new Date(a.createdAt || a.date).getTime());
+    return list.sort((a, b) => {
+      const timeA = new Date(a.createdAt || a.date || 0).getTime() || 0;
+      const timeB = new Date(b.createdAt || b.date || 0).getTime() || 0;
+      return timeB - timeA;
+    });
   }
 
   getEyesightBookingById(id) {

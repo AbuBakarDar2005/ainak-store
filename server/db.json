@@ -863,6 +863,46 @@
   },
   "automationLogs": [
     {
+      "id": "log-1793237437335",
+      "timestamp": "2026-10-29T01:30:37.335Z",
+      "type": "system",
+      "status": "Success",
+      "message": "Main Admin restored standard 5 optical lens categories",
+      "payload": null
+    },
+    {
+      "id": "log-1793237409872",
+      "timestamp": "2026-10-29T01:30:09.872Z",
+      "type": "system",
+      "status": "Success",
+      "message": "Main Admin removed lens category ID lens-smart-glasses",
+      "payload": null
+    },
+    {
+      "id": "log-1793237389425",
+      "timestamp": "2026-10-29T01:29:49.425Z",
+      "type": "system",
+      "status": "Success",
+      "message": "Main Admin restored standard 5 optical lens categories",
+      "payload": null
+    },
+    {
+      "id": "log-1793237367980",
+      "timestamp": "2026-10-29T01:29:27.980Z",
+      "type": "system",
+      "status": "Success",
+      "message": "Main Admin removed lens category ID lens-all-in-one",
+      "payload": null
+    },
+    {
+      "id": "log-1793235457852",
+      "timestamp": "2026-10-29T00:57:37.853Z",
+      "type": "system",
+      "status": "Success",
+      "message": "Main Admin removed lens category ID lens-smart-glasses",
+      "payload": null
+    },
+    {
       "id": "log-1793092194782",
       "timestamp": "2026-10-27T09:09:54.783Z",
       "type": "eyesight_booking",

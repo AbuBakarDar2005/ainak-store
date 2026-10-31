@@ -17,7 +17,7 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onBack }) => {
 
       <div className="border-b border-luxury-100 pb-6 mb-8">
         <span className="text-xs uppercase font-bold tracking-wider text-zinc-800 bg-zinc-100 border border-zinc-200 px-3 py-1 rounded-full">
-          Checklist #1: Privacy Commitment
+          Data Protection • Privacy Commitment
         </span>
         <h1 className="font-serif text-3xl font-bold text-luxury-950 mt-3">
           Privacy Policy & Biometric Data Safeguards

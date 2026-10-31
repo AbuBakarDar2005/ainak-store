@@ -12,6 +12,8 @@ interface CheckoutModalProps {
   onOrderSuccess: (order: Order) => void;
   currency: 'PKR' | 'USD';
   exchangeRate: number;
+  discountPercent?: number;
+  promoCode?: string;
 }
 
 const PAKISTAN_CITIES = [
@@ -26,7 +28,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   cart,
   onOrderSuccess,
   currency,
-  exchangeRate
+  exchangeRate,
+  discountPercent = 0,
+  promoCode = ''
 }) => {
   const [formData, setFormData] = useState<CustomerDetails>({
     name: '',
@@ -93,8 +97,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     return sum + (base + itemLensPrice) * (item.quantity || 1);
   }, 0);
 
-  const shippingFee = rawSubtotal >= 5000 ? 0 : 250;
-  const total = rawSubtotal + shippingFee;
+  const discountAmount = discountPercent > 0 ? Math.round(rawSubtotal * (discountPercent / 100)) : 0;
+  const subtotal = Math.max(0, rawSubtotal - discountAmount);
+  const shippingFee = subtotal >= 5000 || cart.length === 0 ? 0 : 250;
+  const total = subtotal + shippingFee;
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -146,7 +152,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         })),
         paymentMethod: paymentMethod === 'cod' ? 'Cash on Delivery (COD)' : 'Credit / Debit Card (Online)',
         notes: notes.trim(),
-        honeypot // Checklist #14: honeypot field
+        discountPercent,
+        promoCode,
+        honeypot // Anti-spam honeypot field
       };
 
       const res = await fetch('/api/orders', {
@@ -458,14 +466,18 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   Order Summary ({cart.length} items)
                 </h4>
                 <div className="max-h-36 overflow-y-auto space-y-2 mb-4 text-xs">
-                  {cart.map(item => (
-                    <div key={item.id} className="flex justify-between items-center text-luxury-800">
-                      <span className="truncate max-w-[170px]">{item.product.title} x{item.quantity}</span>
-                      <span className="font-semibold">
-                        {formatCurrency((item.product.salePrice || item.product.basePrice + (item.lensOption?.price || 0)) * item.quantity, currency, exchangeRate)}
-                      </span>
-                    </div>
-                  ))}
+                  {cart.map(item => {
+                    const base = item.product.salePrice != null ? item.product.salePrice : (item.product.basePrice || 0);
+                    const unitPrice = base + (item.lensOption?.price || 0);
+                    return (
+                      <div key={item.id} className="flex justify-between items-center text-luxury-800">
+                        <span className="truncate max-w-[170px]">{item.product.title} x{item.quantity}</span>
+                        <span className="font-semibold">
+                          {formatCurrency(unitPrice * item.quantity, currency, exchangeRate)}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
 
                 {/* Price Breakdown */}
@@ -474,6 +486,12 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     <span>Subtotal</span>
                     <span>{formatCurrency(rawSubtotal, currency, exchangeRate)}</span>
                   </div>
+                  {discountAmount > 0 && (
+                    <div className="flex justify-between text-emerald-700 font-semibold">
+                      <span>Discount ({discountPercent}% {promoCode ? `• ${promoCode}` : ''})</span>
+                      <span>-{formatCurrency(discountAmount, currency, exchangeRate)}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between text-luxury-600">
                     <span>Shipping</span>
                     <span>{shippingFee === 0 ? <strong className="text-emerald-700">FREE</strong> : formatCurrency(shippingFee, currency, exchangeRate)}</span>
