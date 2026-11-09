@@ -190,7 +190,7 @@ export const AIStylistWidget: React.FC<AIStylistWidgetProps> = ({
       {/* Floating Chat Modal */}
       {isOpen && (
         <div className="fixed bottom-20 right-4 sm:right-6 z-50 w-[94vw] sm:w-[420px] max-h-[640px] h-[82vh] bg-white rounded-2xl shadow-2xl border border-luxury-200 flex flex-col overflow-hidden animate-slide-up">
-          
+
           {/* Header */}
           <div className="bg-luxury-950 text-white px-5 py-4 flex items-center justify-between border-b border-white/10">
             <div className="flex items-center gap-3">
@@ -228,7 +228,7 @@ export const AIStylistWidget: React.FC<AIStylistWidgetProps> = ({
 
           {/* Body Content */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-luxury-50">
-            
+
             {/* Interactive Face Shape Quiz Card */}
             {isQuizMode && (
               <div className="bg-white p-4 rounded-xl shadow-md border border-champagne-300 animate-fade-in">
@@ -269,13 +269,12 @@ export const AIStylistWidget: React.FC<AIStylistWidgetProps> = ({
                   </div>
                 )}
 
-                <div className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-xs shadow-sm ${
-                  m.sender === 'user'
-                    ? 'bg-luxury-950 text-white rounded-br-none'
-                    : 'bg-white text-luxury-900 border border-luxury-200 rounded-bl-none'
-                }`}>
+                <div className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-xs shadow-sm ${m.sender === 'user'
+                  ? 'bg-luxury-950 text-white rounded-br-none'
+                  : 'bg-white text-luxury-900 border border-luxury-200 rounded-bl-none'
+                  }`}>
                   <p className="leading-relaxed whitespace-pre-wrap">{m.text}</p>
-                  
+
                   {/* Recommended Product Cards inside Chat */}
                   {m.recommendedProducts && m.recommendedProducts.length > 0 && (
                     <div className="mt-3 pt-3 border-t border-luxury-100 space-y-2">
