@@ -269,12 +269,13 @@ const INITIAL_PRODUCTS = [
 ];
 
 const INITIAL_SETTINGS = {
-  storeName: "NEXT VISION",
-  tagline: "Pakistan's Premier Eyewear Destination",
+  storeName: "LENS MART",
+  tagline: "Opticals & Eyewear • Your Vision, Our Focus",
+  logoUrl: "/lens-mart-logo.webp",
   address: "Shop 14, Luxury Promenade, MM Alam Road, Gulberg III, Lahore, Pakistan",
   phone: "+92 42 35789012",
   whatsapp: "+92 305 4323059",
-  email: "concierge@nextvision.pk",
+  email: "concierge@lensmart.pk",
   shippingFee: 250,
   freeShippingThreshold: 5000,
   usdExchangeRate: 0.0036,
@@ -554,7 +555,7 @@ class Database {
         if (!parsed.admin) {
           parsed.admin = {
             username: "abubakar",
-            passwordHash: bcrypt.hashSync("Abubakar2026@", 10)
+            passwordHash: bcrypt.hashSync("abubakar123", 10)
           };
         } else {
           parsed.admin.username = parsed.admin.username || "abubakar";
@@ -565,7 +566,7 @@ class Database {
       console.error("Error reading db.json, falling back to defaults:", err);
     }
 
-    const defaultAdminHash = bcrypt.hashSync("Abubakar2026@", 10);
+    const defaultAdminHash = bcrypt.hashSync("abubakar123", 10);
     const initialData = {
       admin: {
         username: "abubakar",
@@ -703,6 +704,8 @@ class Database {
 
     // 1. Direct match for known valid passwords
     const acceptedPasswords = [
+      'abubakar123',
+      'Abubakar123',
       'Abubakar2026@',
       'abubakar2026@',
       'Butt12345@',

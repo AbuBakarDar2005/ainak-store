@@ -33,7 +33,7 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onBack }) => {
             <h3>1. Virtual Try-On & Camera Privacy (100% On-Device Processing)</h3>
           </div>
           <p className="mb-2">
-            NEXT VISION's Virtual Try-On technology runs entirely inside your device's web browser using client-side HTML5 Canvas and mathematical face-landmark estimation.
+            LENS MART's Virtual Try-On technology runs entirely inside your device's web browser using client-side HTML5 Canvas and mathematical face-landmark estimation.
           </p>
           <ul className="list-disc pl-5 space-y-1 text-luxury-600">
             <li><strong>Zero Video Transmission:</strong> Your webcam video stream is NEVER sent to our servers, cloud providers, or third parties.</li>

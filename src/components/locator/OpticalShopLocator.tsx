@@ -491,7 +491,7 @@ export const OpticalShopLocator: React.FC<OpticalShopLocatorProps> = ({
               Locate Nearby Optical Ateliers & <span className="gold-shimmer italic font-normal">Eye Clinics</span>
             </h1>
             <p className="text-luxury-300 text-xs sm:text-sm mt-2 leading-relaxed">
-              Find authorized NEXT VISION ateliers, certified optometrists, and free 3D refraction eye test centers across Pakistan with real-time GPS navigation.
+              Find authorized LENS MART ateliers, certified optometrists, and free 3D refraction eye test centers across Pakistan with real-time GPS navigation.
             </p>
           </div>
 
@@ -843,7 +843,7 @@ export const OpticalShopLocator: React.FC<OpticalShopLocatorProps> = ({
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-luxury-950 border border-gold inline-block"></span>
-                <span>NEXT VISION Flagship Store</span>
+                <span>LENS MART Flagship Store</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-white border border-luxury-400 inline-block"></span>

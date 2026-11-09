@@ -33,7 +33,7 @@ export const TermsConditions: React.FC<TermsConditionsProps> = ({ onBack }) => {
             <h3>1. 7-Day Hassle-Free Replacement Policy</h3>
           </div>
           <p className="mb-2">
-            Every frame purchased from NEXT VISION comes with a 7-day unconditional replacement guarantee from the date of courier delivery.
+            Every frame purchased from LENS MART comes with a 7-day unconditional replacement guarantee from the date of courier delivery.
           </p>
           <ul className="list-disc pl-5 space-y-1 text-luxury-600">
             <li>If the frame fit does not suit your face shape, you may exchange it for any alternate frame of equal value.</li>

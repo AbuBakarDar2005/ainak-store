@@ -22,7 +22,7 @@ export const WhatsAppConcierge: React.FC<WhatsAppConciergeProps> = ({ settings }
   const handleTrackSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (orderTrackId.trim()) {
-      openWhatsApp(`Hi NEXT VISION Concierge, could you please update me on the courier tracking and dispatch status for my Order #${orderTrackId.trim()}?`);
+      openWhatsApp(`Hi LENS MART Concierge, could you please update me on the courier tracking and dispatch status for my Order #${orderTrackId.trim()}?`);
     }
   };
 
@@ -51,7 +51,7 @@ export const WhatsAppConcierge: React.FC<WhatsAppConciergeProps> = ({ settings }
                 <MessageCircle className="w-5 h-5 fill-current" />
               </div>
               <div>
-                <h4 className="font-serif font-bold text-sm">NEXT VISION WhatsApp Help</h4>
+                <h4 className="font-serif font-bold text-sm">LENS MART WhatsApp Help</h4>
                 <p className="text-[11px] text-emerald-200 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-300"></span> Typically replies in &lt; 5 mins
                 </p>
@@ -70,7 +70,7 @@ export const WhatsAppConcierge: React.FC<WhatsAppConciergeProps> = ({ settings }
             <p className="text-[11px] text-luxury-500 font-medium">How can our optical team assist you today?</p>
 
             <button
-              onClick={() => openWhatsApp("Hi NEXT VISION Concierge, I would like to ask some questions regarding frame sizing and recommendations.")}
+              onClick={() => openWhatsApp("Hi LENS MART Concierge, I would like to ask some questions regarding frame sizing and recommendations.")}
               className="w-full p-2.5 bg-white hover:bg-emerald-50 rounded-xl border border-luxury-200 hover:border-emerald-500 text-left flex items-center justify-between transition-all group"
             >
               <div className="flex items-center gap-2">
@@ -81,7 +81,7 @@ export const WhatsAppConcierge: React.FC<WhatsAppConciergeProps> = ({ settings }
             </button>
 
             <button
-              onClick={() => openWhatsApp("Hi NEXT VISION, I would like to upload my doctor's prescription slip / optometrist test card for custom optical lenses.")}
+              onClick={() => openWhatsApp("Hi LENS MART, I would like to upload my doctor's prescription slip / optometrist test card for custom optical lenses.")}
               className="w-full p-2.5 bg-white hover:bg-emerald-50 rounded-xl border border-luxury-200 hover:border-emerald-500 text-left flex items-center justify-between transition-all group"
             >
               <div className="flex items-center gap-2">

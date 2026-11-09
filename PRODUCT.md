@@ -39,9 +39,9 @@ Omnichannel luxury couture optics for Pakistan: virtual AR fitting + high-defini
 
 ## Brand Commitments
 
-- **Name:** NEXT VISION (tagline: "Pakistan's Premier Eyewear Destination").
-- **Visual Aesthetic:** Obsidian luxury black (`#09090b`), warm champagne gold accents (`#d4af37`), crisp architectural typography (serif headings paired with clean sans body).
-- **Tone:** Refined, authoritative, couture, reassuringly clinical yet elevated.
+- **Name:** LENS MART (tagline: "Opticals & Eyewear • Your Vision, Our Focus").
+- **Visual Aesthetic:** Deep optical navy (`#0B2545`), vibrant cyan/teal accents (`#00B4D8` / `#00C49F`), crisp modern architecture and typography.
+- **Tone:** Authoritative, high-precision, fresh, welcoming, clinical excellence meets contemporary designer eyewear.
 
 ## Evidence on Hand
 

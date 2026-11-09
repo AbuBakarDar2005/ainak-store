@@ -45,11 +45,11 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   const handleApplyPromo = (e: React.FormEvent) => {
     e.preventDefault();
     const code = promoCode.trim().toUpperCase();
-    if (code === 'NEXTVISION' || code === 'NEXTVISION2026' || code === 'AINAK2026' || code === 'LUXURY10') {
+    if (code === 'LENSMART' || code === 'LENSMART2026' || code === 'NEXTVISION' || code === 'NEXTVISION2026' || code === 'LUXURY10') {
       setDiscountPercent(10);
-      setPromoMessage({ text: '10% NEXT VISION promo code applied!', isError: false });
+      setPromoMessage({ text: '10% LENS MART promo code applied!', isError: false });
     } else {
-      setPromoMessage({ text: 'Invalid promo code. Try "NEXTVISION"', isError: true });
+      setPromoMessage({ text: 'Invalid promo code. Try "LENSMART"', isError: true });
     }
   };
 

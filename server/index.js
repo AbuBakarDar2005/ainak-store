@@ -78,7 +78,7 @@ app.use((req, res, next) => {
 app.get('/api', (req, res) => {
   res.json({
     status: 'online',
-    store: 'NEXT VISION',
+    store: 'LENS MART',
     version: '1.0.0',
     timestamp: new Date().toISOString()
   });
@@ -256,7 +256,7 @@ function formatWhatsAppOrderMessage(order, storeSettings) {
     return line;
   }).join('\n');
 
-  const text = `👓 *NEXT VISION — NEW ORDER CONFIRMATION* 👓\n` +
+  const text = `👓 *LENS MART — NEW ORDER CONFIRMATION* 👓\n` +
     `----------------------------------------\n` +
     `*Order ID:* ${order.id}\n` +
     `*Customer:* ${order.customer.name}\n` +
@@ -417,7 +417,7 @@ app.post('/api/analytics/track', (req, res) => {
 // ==========================================
 
 const OPTICAL_KNOWLEDGE = `
-You are the Master Optical Stylist for NEXT VISION, Pakistan's premier luxury eyewear house.
+You are the Master Optical Stylist for LENS MART, Pakistan's premier optical and eyewear destination (Your Vision, Our Focus).
 Rules for recommendations:
 - Round Face: Needs angular frames (Square, Rectangle, Geometric, Cat-eye) to define cheekbones and sharpen curves.
 - Oval Face: Extremely versatile. Fits Aviator, Square, Geometric, and Wayfarer effortlessly.
@@ -513,9 +513,9 @@ app.post('/api/ai/chat', aiLimiter, async (req, res) => {
   } else if (lowerMsg.includes("blue") || lowerMsg.includes("computer") || lowerMsg.includes("screen")) {
     fallbackReply = "Digital screen fatigue is caused by high-energy visible 415-455nm blue light. Our **CyberGuard BlueShield Pro** filters 98% of this radiation with zero yellowish distortion, perfect for long design or programming sessions.";
   } else if (lowerMsg.includes("prescription") || lowerMsg.includes("lens") || lowerMsg.includes("power")) {
-    fallbackReply = "All NEXT VISION frames support custom prescription lenses: Single Vision (distance or reading), Bifocals, Progressives, Blue-Cut, and Photochromic Transition lenses. You can easily enter your Sphere, Cylinder, and Axis or attach your doctor's slip during checkout.";
+    fallbackReply = "All LENS MART frames support custom prescription lenses: Single Vision (distance or reading), Bifocals, Progressives, Blue-Cut, and Photochromic Transition lenses. You can easily enter your Sphere, Cylinder, and Axis or attach your doctor's slip during checkout.";
   } else {
-    fallbackReply = "Welcome to NEXT VISION. Whether you are seeking precision blue-light protection, ultralight titanium opticals, or polarized sunglasses, I am here to curate your signature eyewear. Try taking our Face Shape Diagnostic Quiz or select any frame to launch the live Virtual Try-On!";
+    fallbackReply = "Welcome to LENS MART. Whether you are seeking precision blue-light protection, ultralight titanium opticals, or polarized sunglasses, I am here to curate your signature eyewear. Try taking our Face Shape Diagnostic Quiz or select any frame to launch the live Virtual Try-On!";
   }
 
   res.json({
@@ -1219,7 +1219,7 @@ app.get('/api/admin/orders/export-csv', authenticateAdmin, requireSuperAdmin, (r
 // Start Express Server
 if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
   app.listen(PORT, () => {
-    console.log(`[NEXT VISION] API Server running securely on http://localhost:${PORT}`);
+    console.log(`[LENS MART] API Server running securely on http://localhost:${PORT}`);
   });
 }
 

@@ -186,9 +186,9 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
                     {/* Quick AR Try-On Hover Button */}
                     <button
                       onClick={() => onLaunchTryOn(product)}
-                      className="absolute inset-x-4 bottom-3 py-2.5 bg-luxury-950/90 hover:bg-luxury-950 backdrop-blur-md text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-2 group-hover:translate-y-0"
+                      className="absolute inset-x-4 bottom-3 py-2.5 bg-gradient-to-r from-lens-deep to-lens-navy hover:from-lens-navy hover:to-lens-blue backdrop-blur-md text-white border border-lens-teal/30 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-2 group-hover:translate-y-0"
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-zinc-200" /> Try On Live in AR
+                      <Sparkles className="w-3.5 h-3.5 text-lens-teal" /> Try On Live in AR
                     </button>
                   </div>
 
@@ -252,10 +252,10 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
                   <div className="flex items-center gap-1.5">
                     <button
                       onClick={() => onConfigurePrescription(product, currentColor)}
-                      className="px-3 py-2 bg-luxury-950 hover:bg-luxury-800 text-white rounded-xl text-xs font-semibold transition-all shadow-sm flex items-center gap-1"
+                      className="px-3.5 py-2 bg-gradient-to-r from-lens-teal to-lens-cyan hover:brightness-105 text-luxury-950 font-bold rounded-xl text-xs transition-all shadow-sm flex items-center gap-1.5 active:scale-95"
                       title="Select prescription lenses & buy"
                     >
-                      <ShoppingBag className="w-3.5 h-3.5 text-zinc-200" />
+                      <ShoppingBag className="w-3.5 h-3.5 text-luxury-950" />
                       <span>Order</span>
                     </button>
                   </div>

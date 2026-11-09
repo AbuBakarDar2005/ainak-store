@@ -67,35 +67,34 @@ export const Footer: React.FC<FooterProps> = ({
           
           {/* Brand Info (2 cols) */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-white text-luxury-950 flex items-center justify-center font-serif font-bold text-lg">
-                N
-              </div>
-              <span className="font-serif text-xl font-bold tracking-tight">
-                NEXT <span className="text-zinc-400 font-sans text-sm font-light">VISION</span>
-              </span>
+            <div className="flex items-center gap-3">
+              <img
+                src={settings?.logoUrl || "/lens-mart-logo.webp"}
+                alt="LENS MART Opticals & Eyewear"
+                className="h-10 w-auto max-w-[200px] object-contain"
+              />
             </div>
             <p className="text-luxury-400 text-xs leading-relaxed max-w-sm">
-              Pakistan's premier luxury optical atelier. NEXT VISION fuses Italian bio-cellulose acetate and Japanese titanium with artificial intelligence and real-time face tracking.
+              <strong>LENS MART</strong>: Your Vision, Our Focus. Pakistan's premier optical destination fusing precision Italian acetate, lightweight titanium, and clinical-grade optical lenses with real-time AR Virtual Try-On.
             </p>
             <div className="space-y-1.5 text-luxury-300">
               <p className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-zinc-400 shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-lens-teal shrink-0 mt-0.5" />
                 <span>{settings?.address || 'Shop 14, Luxury Promenade, MM Alam Road, Gulberg III, Lahore, Pakistan'}</span>
               </p>
               <p className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-zinc-400 shrink-0" />
+                <Phone className="w-4 h-4 text-lens-teal shrink-0" />
                 <span>{settings?.phone || '+92 42 35789012'} (10 AM - 9 PM PKT)</span>
               </p>
               <p className="flex items-center gap-2">
                 <MessageCircle className="w-4 h-4 text-emerald-400 shrink-0" />
                 <a
-                  href={`https://wa.me/${(settings?.whatsapp || '923008472910').replace(/\+/g, '')}?text=Hi%20NEXT%20VISION%20Concierge`}
+                  href={`https://wa.me/${(settings?.whatsapp || '923054323059').replace(/\+/g, '')}?text=Hi%20LENS%20MART%20Concierge`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:underline text-emerald-400 font-medium"
                 >
-                  WhatsApp Concierge: {settings?.whatsapp || '+92 300 8472910'}
+                  WhatsApp Concierge: {settings?.whatsapp || '+92 305 4323059'}
                 </a>
               </p>
             </div>
@@ -197,7 +196,7 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-luxury-900/60 flex flex-col lg:flex-row items-center justify-between text-[11px] text-luxury-500 gap-4">
           <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
-            <p>© {currentYear} NEXT VISION. Handcrafted in Pakistan. All rights reserved.</p>
+            <p>© {currentYear} LENS MART. Opticals & Eyewear. All rights reserved.</p>
             <span className="hidden sm:inline text-luxury-800">•</span>
             {/* Bottom Admin & Partner Portal Access */}
             <div className="flex items-center gap-2">

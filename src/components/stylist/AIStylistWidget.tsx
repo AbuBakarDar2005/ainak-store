@@ -37,7 +37,7 @@ export const AIStylistWidget: React.FC<AIStylistWidgetProps> = ({
     {
       id: 'welcome',
       sender: 'stylist',
-      text: 'Greetings. I am your Gemini-powered NEXT VISION Optical Stylist. I can diagnose your exact face shape, recommend precision frames, or guide you through prescription lens coatings.',
+      text: 'Greetings. I am your Gemini-powered LENS MART Optical Stylist. I can diagnose your exact face shape, recommend precision frames, or guide you through prescription lens coatings.',
       timestamp: 'Just now'
     }
   ]);
@@ -199,7 +199,7 @@ export const AIStylistWidget: React.FC<AIStylistWidgetProps> = ({
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h4 className="font-serif font-bold text-sm tracking-wide">NEXT VISION AI Stylist</h4>
+                  <h4 className="font-serif font-bold text-sm tracking-wide">LENS MART AI Stylist</h4>
                   <span className="text-[10px] bg-emerald-950 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-700/50">
                     Gemini 2.0
                   </span>

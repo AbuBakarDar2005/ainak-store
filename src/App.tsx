@@ -24,8 +24,9 @@ export function App() {
   const [products, setProducts] = useState<Product[]>(DEFAULT_PRODUCTS);
   const [lensCategories, setLensCategories] = useState<LensCategory[]>([]);
   const [settings, setSettings] = useState<StoreSettings | null>({
-    storeName: "NEXT VISION",
-    tagline: "Pakistan's Premier Eyewear Destination",
+    storeName: "LENS MART",
+    tagline: "Opticals & Eyewear • Your Vision, Our Focus",
+    logoUrl: "/lens-mart-logo.webp",
     address: "Shop 14, Luxury Promenade, MM Alam Road, Gulberg III, Lahore, Pakistan",
     phone: "+92 3054323059",
     whatsapp: "+92 305 4323059",
@@ -39,7 +40,10 @@ export function App() {
   });
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
-      const saved = localStorage.getItem('nextvision_cart') || localStorage.getItem('ainak_cart');
+      const saved =
+        localStorage.getItem('lensmart_cart') ||
+        localStorage.getItem('nextvision_cart') ||
+        localStorage.getItem('ainak_cart');
       if (!saved) return [];
       const parsed = JSON.parse(saved);
       if (!Array.isArray(parsed)) return [];
@@ -109,6 +113,7 @@ export function App() {
   // Sync Cart to localStorage
   useEffect(() => {
     try {
+      localStorage.setItem('lensmart_cart', JSON.stringify(cart));
       localStorage.setItem('nextvision_cart', JSON.stringify(cart));
     } catch (e) {
       console.warn("Could not persist cart:", e);

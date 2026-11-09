@@ -43,10 +43,17 @@ interface AdminDashboardProps {
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency, exchangeRate, initialAuthMode }) => {
-  const [token, setToken] = useState<string | null>(localStorage.getItem('nextvision_admin_token') || localStorage.getItem('ainak_admin_token'));
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem('lensmart_admin_token') ||
+    localStorage.getItem('nextvision_admin_token') ||
+    localStorage.getItem('ainak_admin_token')
+  );
   const [currentUser, setCurrentUser] = useState<AdminUser | null>(() => {
     try {
-      const saved = localStorage.getItem('nextvision_admin_user') || localStorage.getItem('ainak_admin_user');
+      const saved =
+        localStorage.getItem('lensmart_admin_user') ||
+        localStorage.getItem('nextvision_admin_user') ||
+        localStorage.getItem('ainak_admin_user');
       return saved ? JSON.parse(saved) : null;
     } catch {
       return null;
@@ -191,8 +198,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
 
       const data = await res.json();
       if (res.ok && data.token) {
+        localStorage.setItem('lensmart_admin_token', data.token);
         localStorage.setItem('nextvision_admin_token', data.token);
         if (data.user) {
+          localStorage.setItem('lensmart_admin_user', JSON.stringify(data.user));
           localStorage.setItem('nextvision_admin_user', JSON.stringify(data.user));
           setCurrentUser(data.user);
         }
@@ -208,8 +217,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('lensmart_admin_token');
     localStorage.removeItem('nextvision_admin_token');
     localStorage.removeItem('ainak_admin_token');
+    localStorage.removeItem('lensmart_admin_user');
     localStorage.removeItem('nextvision_admin_user');
     setCurrentUser(null);
     setToken(null);
@@ -1202,10 +1213,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
       <div className="min-h-screen bg-luxury-950 flex items-center justify-center p-4">
         <div className="w-full max-w-xl bg-white rounded-2xl shadow-2xl p-6 sm:p-8 border border-luxury-800">
           <div className="text-center mb-6">
-            <div className="w-12 h-12 rounded-full bg-luxury-950 text-gold flex items-center justify-center mx-auto mb-3 shadow-md">
-              <ShieldCheck className="w-6 h-6" />
+            <div className="flex justify-center mb-3">
+              <img
+                src="/lens-mart-logo.webp"
+                alt="LENS MART"
+                className="h-12 w-auto object-contain"
+              />
             </div>
-            <h2 className="font-serif text-2xl font-bold text-luxury-950">NEXT VISION Portal</h2>
+            <h2 className="font-serif text-2xl font-bold text-luxury-950">LENS MART Portal</h2>
             <p className="text-xs text-luxury-500 mt-1">Main Administration & Partner Clinic Management</p>
           </div>
 
@@ -1327,13 +1342,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
                     type="button"
                     onClick={() => {
                       setUsername('abubakar');
-                      setPassword('Abubakar2026@');
+                      setPassword('abubakar123');
                       setShowPassword(true);
                     }}
                     className="text-[11px] text-luxury-600 hover:text-luxury-900 bg-luxury-100 hover:bg-luxury-200 px-3 py-1.5 rounded-lg font-medium transition-all inline-flex items-center gap-1.5 border border-luxury-200"
                   >
                     <Key className="w-3 h-3 text-gold" />
-                    <span>Quick Fill Admin Credentials</span>
+                    <span>Quick Fill Admin: abubakar / abubakar123</span>
                   </button>
                 </div>
               </form>
@@ -1601,7 +1616,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
             {isSuperAdmin ? (
               <>
                 <h1 className="font-bold text-base tracking-wide flex items-center gap-2 text-zinc-950">
-                  <span>NEXT VISION Control Console</span>
+                  <span>LENS MART Control Console</span>
                   <span className="text-xs bg-zinc-100 text-zinc-900 px-2.5 py-0.5 rounded-full border border-zinc-300 font-bold flex items-center gap-1">
                     <ShieldCheck className="w-3.5 h-3.5 text-zinc-800" />
                     <span>Main SuperAdmin</span>
@@ -3606,7 +3621,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
                     {currentUser?.storeName || 'Partner Optical Store'}
                   </h3>
                   <p className="text-xs text-luxury-500">
-                    Verified optical clinic partnership managed under NEXT VISION Luxury Eyewear Network.
+                    Verified optical clinic partnership managed under LENS MART Eyewear Network.
                   </p>
                 </div>
 

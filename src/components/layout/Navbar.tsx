@@ -105,32 +105,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Brand Logo */}
           <div className="flex items-center gap-3">
-            <a href="/" onClick={(e) => { e.preventDefault(); onSelectCategory('All'); }} className="flex items-center gap-2.5 group">
-              {settings?.logoUrl ? (
-                <div className="w-10 h-10 rounded-xl bg-luxury-950 flex items-center justify-center p-1 shadow-md group-hover:scale-105 transition-transform overflow-hidden border border-luxury-800">
-                  <img src={settings.logoUrl} alt={settings.storeName || "NEXT VISION"} className="w-full h-full object-contain" />
-                </div>
-              ) : (
-                <div className="w-10 h-10 rounded-xl bg-luxury-950 text-white flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-                  <svg viewBox="0 0 64 64" className="w-6 h-6" fill="none">
-                    <rect x="8" y="24" width="20" height="16" rx="8" stroke="#ffffff" strokeWidth="2.5" fill="#09090b"/>
-                    <rect x="36" y="24" width="20" height="16" rx="8" stroke="#ffffff" strokeWidth="2.5" fill="#09090b"/>
-                    <path d="M28 32 C31 29, 33 29, 36 32" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round"/>
-                  </svg>
-                </div>
-              )}
-              <div>
-                <span className="font-serif text-2xl font-bold tracking-tight text-luxury-950 block leading-none">
-                  {settings?.storeName ? (
-                    settings.storeName
-                  ) : (
-                    <>NEXT <span className="text-zinc-500 font-sans text-lg font-light">VISION</span></>
-                  )}
-                </span>
-                <span className="text-[9px] uppercase tracking-widest text-luxury-500 block font-semibold">
-                  {settings?.tagline || 'Luxury Optical House'}
-                </span>
-              </div>
+            <a href="/" onClick={(e) => { e.preventDefault(); onSelectCategory('All'); }} className="flex items-center gap-2 group">
+              <img
+                src={settings?.logoUrl || "/lens-mart-logo.webp"}
+                alt="LENS MART Opticals & Eyewear"
+                className="h-10 sm:h-12 w-auto max-w-[200px] sm:max-w-[260px] object-contain transition-transform group-hover:scale-[1.02]"
+              />
             </a>
           </div>
 

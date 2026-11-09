@@ -41,7 +41,7 @@ export const StoreLocatorTeaser: React.FC<StoreLocatorTeaserProps> = ({ onOpenLo
               Visit an Optical Atelier <span className="text-zinc-400 italic font-normal">Near You</span>
             </h2>
             <p className="text-luxury-300 text-xs sm:text-sm font-light leading-relaxed">
-              Step into an authorized NEXT VISION atelier or certified partner clinic for complimentary computerized eye testing, real-time bespoke frame adjustments, and same-day lens fitting.
+              Step into an authorized LENS MART atelier or certified partner clinic for complimentary computerized eye testing, real-time bespoke frame adjustments, and same-day lens fitting.
             </p>
           </div>
 
