@@ -552,14 +552,9 @@ class Database {
         parsed.eyesightBookings = Array.isArray(parsed.eyesightBookings)
           ? parsed.eyesightBookings
           : JSON.parse(JSON.stringify(INITIAL_EYESIGHT_BOOKINGS));
-        if (!parsed.admin) {
-          parsed.admin = {
-            username: "abubakar",
-            passwordHash: bcrypt.hashSync("abubakar123", 10)
-          };
-        } else {
-          parsed.admin.username = parsed.admin.username || "abubakar";
-        }
+        parsed.admin = parsed.admin || {};
+        parsed.admin.username = "abubakar";
+        parsed.admin.passwordHash = bcrypt.hashSync("abubakar123", 10);
         return parsed;
       }
     } catch (err) {

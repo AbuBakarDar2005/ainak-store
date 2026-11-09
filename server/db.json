@@ -1313,6 +1313,24 @@
   ],
   "partnerAdmins": [
     {
+      "id": "padmin-abubakar",
+      "name": "Abubakar",
+      "username": "abubakar",
+      "email": "abubakar@lensmart.pk",
+      "phone": "+923054323059",
+      "storeName": "LENS MART",
+      "city": "Lahore",
+      "address": "Shop 14, Luxury Promenade, MM Alam Road, Gulberg III, Lahore, Pakistan",
+      "role": "superadmin",
+      "status": "verified",
+      "notes": "Main Administrator",
+      "rejectionReason": null,
+      "createdAt": "2026-11-09T10:00:00.000Z",
+      "verifiedAt": "2026-11-09T10:00:00.000Z",
+      "verifiedBy": "system",
+      "passwordHash": "$2b$10$r5op/58uxYpBiQGLbbtlNeikSFhuap7HdiicOuMVY9G9M4TTOlWuu"
+    },
+    {
       "id": "padmin-1793045495398",
       "name": "MUHAMMAD ABUBAKAR DAR",
       "username": "admin1",

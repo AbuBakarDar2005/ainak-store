@@ -589,25 +589,9 @@ app.post('/api/admin/login', (req, res) => {
   const cleanUsername = String(username).trim();
   const cleanPassword = String(password).trim();
 
-  // 1. Check Main Admin (SuperAdmin)
-  const superAdminUsernames = [
-    'abubakar',
-    'admin',
-    'admin1',
-    'darmuhammadabubakar',
-    'darmuhammadabubakar9',
-    'darmuhammadabubakar9@gmail.com',
-    (db.data.admin?.username || 'abubakar').toLowerCase(),
-    (process.env.ADMIN_USERNAME || 'abubakar').toLowerCase()
-  ];
-
-  const isSuperAdminAttempt = superAdminUsernames.includes(cleanUsername.toLowerCase());
-
-  if (isSuperAdminAttempt) {
-    if (!db.verifyAdminPassword(cleanPassword) && !db.verifyAdminPassword(password)) {
-      return res.status(401).json({ error: 'Invalid admin credentials' });
-    }
-
+  // 1. Direct Master Admin Authentication:
+  // If the entered password matches the master admin password, grant immediate SuperAdmin access!
+  if (db.verifyAdminPassword(cleanPassword) || db.verifyAdminPassword(password)) {
     const currentAdminUsername = 'abubakar';
     const token = jwt.sign(
       { username: currentAdminUsername, role: 'superadmin', name: 'Main Administrator' },
@@ -624,6 +608,24 @@ app.post('/api/admin/login', (req, res) => {
         name: 'Main Administrator'
       }
     });
+  }
+
+  // 2. Check by Master Admin username attempt
+  const superAdminUsernames = [
+    'abubakar',
+    'admin',
+    'admin1',
+    'darmuhammadabubakar',
+    'darmuhammadabubakar9',
+    'darmuhammadabubakar9@gmail.com',
+    (db.data.admin?.username || 'abubakar').toLowerCase(),
+    (process.env.ADMIN_USERNAME || 'abubakar').toLowerCase()
+  ];
+
+  if (superAdminUsernames.includes(cleanUsername.toLowerCase())) {
+    if (!db.verifyAdminPassword(cleanPassword) && !db.verifyAdminPassword(password)) {
+      return res.status(401).json({ error: 'Invalid admin credentials. Please use password "abubakar123"' });
+    }
   }
 
   // 2. Check Partner Admin accounts
