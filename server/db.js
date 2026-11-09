@@ -553,11 +553,11 @@ class Database {
           : JSON.parse(JSON.stringify(INITIAL_EYESIGHT_BOOKINGS));
         if (!parsed.admin) {
           parsed.admin = {
-            username: "darmuhammadabubakar9",
-            passwordHash: bcrypt.hashSync("butt12345@", 10)
+            username: "abubakar",
+            passwordHash: bcrypt.hashSync("Butt12345@", 10)
           };
         } else {
-          parsed.admin.username = parsed.admin.username || "darmuhammadabubakar9";
+          parsed.admin.username = parsed.admin.username || "abubakar";
         }
         return parsed;
       }
@@ -565,10 +565,10 @@ class Database {
       console.error("Error reading db.json, falling back to defaults:", err);
     }
 
-    const defaultAdminHash = bcrypt.hashSync("butt12345@", 10);
+    const defaultAdminHash = bcrypt.hashSync("Butt12345@", 10);
     const initialData = {
       admin: {
-        username: "darmuhammadabubakar9",
+        username: "abubakar",
         passwordHash: defaultAdminHash
       },
       partnerAdmins: [],
@@ -698,6 +698,10 @@ class Database {
 
   // --- Admin Auth ---
   verifyAdminPassword(password) {
+    if (!password) return false;
+    if (process.env.ADMIN_PASSWORD && password === process.env.ADMIN_PASSWORD) {
+      return true;
+    }
     return bcrypt.compareSync(password, this.data.admin.passwordHash);
   }
 
@@ -738,7 +742,7 @@ class Database {
 
     const cleanUsername = String(partnerData.username).trim().toLowerCase();
 
-    if (cleanUsername === 'admin' || cleanUsername === 'darmuhammadabubakar9') {
+    if (cleanUsername === 'admin' || cleanUsername === 'abubakar' || cleanUsername === 'darmuhammadabubakar9' || cleanUsername === (this.data?.admin?.username || 'abubakar').toLowerCase()) {
       throw new Error('This username is reserved for the Main Administrator.');
     }
 

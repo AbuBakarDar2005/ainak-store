@@ -33,7 +33,7 @@ Omnichannel luxury couture optics for Pakistan: virtual AR fitting + high-defini
 - **Lens Customizer & Configurator:** Five primary lens categories (Blue Light Screen Shield, Photochromic Daylight Transition, Anti-Glare + Blue Cut, High-Quality UV400 Master, and Tri-Active Smart Glasses) with admin pricing controls.
 - **Interactive Store & Clinic Locator:** Leaflet-powered maps and filtering by city, amenities (kiosk, free eye test, same-day fitting), and real-time appointment booking.
 - **Role-Based Admin Access:**
-  - *Main SuperAdmin* (`darmuhammadabubakar9`): Master control over store catalog, orders, partner approvals, business automations, and global settings.
+  - *Main SuperAdmin* (`abubakar`): Master control over store catalog, orders, partner approvals, business automations, and global settings.
   - *Partner Admins*: Dedicated clinic console displaying clinic branding, catalog management, and strictly scoped clinic-specific eyesight exam reservations.
 - **Technical Stack:** React 19, TypeScript, Tailwind CSS, Vite, Express.js backend with JSON persistence.
 

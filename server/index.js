@@ -589,16 +589,17 @@ app.post('/api/admin/login', (req, res) => {
   const cleanUsername = String(username).trim();
 
   // 1. Check Main Admin (SuperAdmin)
-  const isSuperAdminAttempt = cleanUsername.toLowerCase() === 'darmuhammadabubakar9' ||
+  const isSuperAdminAttempt = cleanUsername.toLowerCase() === 'abubakar' ||
                               cleanUsername.toLowerCase() === 'admin' ||
-                              cleanUsername.toLowerCase() === (db.data.admin?.username || 'darmuhammadabubakar9').toLowerCase();
+                              cleanUsername.toLowerCase() === 'darmuhammadabubakar9' ||
+                              cleanUsername.toLowerCase() === (db.data.admin?.username || 'abubakar').toLowerCase();
 
   if (isSuperAdminAttempt) {
     if (!db.verifyAdminPassword(password)) {
       return res.status(401).json({ error: 'Invalid admin credentials' });
     }
 
-    const currentAdminUsername = db.data.admin?.username || 'darmuhammadabubakar9';
+    const currentAdminUsername = db.data.admin?.username || 'abubakar';
     const token = jwt.sign(
       { username: currentAdminUsername, role: 'superadmin', name: 'Main Administrator' },
       JWT_SECRET,
@@ -678,7 +679,7 @@ app.get('/api/admin/me', authenticateAdmin, (req, res) => {
   if (req.admin.role === 'superadmin') {
     return res.json({
       user: {
-        username: db.data.admin?.username || 'darmuhammadabubakar9',
+        username: db.data.admin?.username || 'abubakar',
         role: 'superadmin',
         name: 'Main Administrator'
       }

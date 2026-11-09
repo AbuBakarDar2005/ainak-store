@@ -85,7 +85,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
   // Tabs: 'stats' | 'products' | 'orders' | 'eyesightBookings' | 'partnerStores' | 'partnerAdmins' | 'automation' | 'settings' | 'lensCategories'
   const [activeTab, setActiveTab] = useState<'stats' | 'products' | 'orders' | 'eyesightBookings' | 'partnerStores' | 'partnerAdmins' | 'automation' | 'settings' | 'lensCategories'>('stats');
 
-  const isSuperAdmin = currentUser?.role === 'superadmin' || currentUser?.username === 'darmuhammadabubakar9' || currentUser?.username === 'admin';
+  const isSuperAdmin = currentUser?.role === 'superadmin' || currentUser?.username === 'abubakar' || currentUser?.username === 'darmuhammadabubakar9' || currentUser?.username === 'admin';
 
   // Guard activeTab if Partner Admin
   useEffect(() => {
@@ -3647,7 +3647,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
                 </h3>
                 <p className="text-xs text-luxury-500">
                   {isSuperAdmin
-                    ? 'Securely rotate Master Store Administrator access credentials (darmuhammadabubakar9)'
+                    ? 'Securely rotate Master Store Administrator access credentials (abubakar)'
                     : `Update your personal Partner Admin account password for @${currentUser?.username || 'partner'} (Partner Admin can only change their personal password)`}
                 </p>
               </div>

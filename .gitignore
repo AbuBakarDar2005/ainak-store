@@ -27,3 +27,7 @@ server/.env
 *.sw?
 server/uploads/*
 !server/uploads/.gitkeep
+
+# Python cache
+__pycache__/
+*.py[cod]
