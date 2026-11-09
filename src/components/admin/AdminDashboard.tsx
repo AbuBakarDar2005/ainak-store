@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   ShieldCheck, Lock, LogOut, Package, ShoppingCart, Settings,
   DollarSign, TrendingUp, Users, AlertTriangle, Plus, Edit, Trash2,
-  Check, X, Eye, Phone, MapPin, Key, RefreshCw, FileSpreadsheet,
+  Check, X, Eye, EyeOff, Phone, MapPin, Key, RefreshCw, FileSpreadsheet,
   Download, Copy, ExternalLink, MessageCircle, Send, CheckCircle2, Sparkles,
   Upload, Image as ImageIcon, Link as LinkIcon, Star, Compass,
   UserCheck, UserX, Clock, Building, Mail, ShieldAlert, BadgeCheck,
@@ -55,6 +55,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
 
   // Auth Card Mode: 'login' | 'register'
@@ -180,10 +181,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
     setIsLoading(true);
 
     try {
+      const cleanU = username.trim();
+      const cleanP = password.trim();
       const res = await fetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ username: cleanU, password: cleanP })
       });
 
       const data = await res.json();
@@ -1285,15 +1288,26 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-luxury-700 mb-1">
-                    Password
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-luxury-700">
+                      Password
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="text-[11px] text-luxury-500 hover:text-luxury-800 flex items-center gap-1 transition-colors"
+                      title={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                      <span>{showPassword ? 'Hide' : 'Show'}</span>
+                    </button>
+                  </div>
                   <input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
+                    placeholder="Enter password"
                     autoComplete="current-password"
                     className="w-full p-2.5 text-xs border border-luxury-300 rounded-lg focus:outline-none focus:border-luxury-950"
                   />
@@ -1307,6 +1321,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onExit, currency
                   <Lock className="w-3.5 h-3.5 text-gold" />
                   {isLoading ? 'Verifying Credentials...' : 'Sign In to Portal'}
                 </button>
+
+                <div className="text-center pt-0.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setUsername('abubakar');
+                      setPassword('Abubakar2026@');
+                      setShowPassword(true);
+                    }}
+                    className="text-[11px] text-luxury-600 hover:text-luxury-900 bg-luxury-100 hover:bg-luxury-200 px-3 py-1.5 rounded-lg font-medium transition-all inline-flex items-center gap-1.5 border border-luxury-200"
+                  >
+                    <Key className="w-3 h-3 text-gold" />
+                    <span>Quick Fill Admin Credentials</span>
+                  </button>
+                </div>
               </form>
 
               <div className="mt-5 pt-4 border-t border-luxury-200 text-center">

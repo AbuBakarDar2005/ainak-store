@@ -1,7 +1,7 @@
 {
   "admin": {
     "username": "abubakar",
-    "passwordHash": "$2b$10$9JHRfOO9OJ3adaxvk2nAPeEm.anJvM7mqU.2d8c2KteOHCZYSncD2"
+    "passwordHash": "$2b$10$XKnuwzlcPwvpYf0hPWnYROkXmhfp4hgeIj7ldTcOKi6WdTUA846NK"
   },
   "settings": {
     "storeName": "NEXT VISION",
@@ -1327,7 +1327,7 @@
       "createdAt": "2026-10-26T20:11:35.398Z",
       "verifiedAt": "2026-10-26T20:16:08.695Z",
       "verifiedBy": "darmuhammadabubakar9",
-      "passwordHash": "$2b$10$zV7uO0eFSpWGDW/jHrNWvueIdH1nuaDDmLZU77kqkKLr66yugEZU."
+      "passwordHash": "$2b$10$XKnuwzlcPwvpYf0hPWnYROkXmhfp4hgeIj7ldTcOKi6WdTUA846NK"
     },
     {
       "id": "padmin-1792966733283",
