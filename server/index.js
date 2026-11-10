@@ -30,6 +30,9 @@ const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'ainak_default_jwt_secret_token_2026';
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 
+// Trust Vercel and reverse proxies for client IP & headers
+app.set('trust proxy', 1);
+
 // Security: Helmet for HTTPS headers and content security
 app.use(helmet({
   contentSecurityPolicy: false,
@@ -48,18 +51,40 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static(uploadsDir));
 app.use('/api/uploads', express.static(uploadsDir));
 
-// Checklist #14: Rate-limiting middleware
+// Helper: safe client IP extractor for rate limiting on reverse proxies & serverless
+const getClientIp = (req) => {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (forwarded) {
+    const list = Array.isArray(forwarded) ? forwarded[0] : forwarded;
+    return list.split(',')[0].trim();
+  }
+  return req.headers['x-real-ip'] || req.socket?.remoteAddress || '127.0.0.1';
+};
+
+// Checklist #14: Rate-limiting middleware (configured for Vercel/proxies)
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 300, // Limit each IP to 300 requests per windowMs
+  max: 500, // 500 requests per 15 minutes per IP
   standardHeaders: true,
   legacyHeaders: false,
+  keyGenerator: getClientIp,
+  validate: {
+    trustProxy: false,
+    xForwardedForHeader: false,
+    forwardedHeader: false
+  },
   message: { error: 'Too many requests from this IP, please try again after 15 minutes.' }
 });
 
 const aiLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 30, // 30 AI queries per minute
+  max: 60, // 60 AI queries per minute
+  keyGenerator: getClientIp,
+  validate: {
+    trustProxy: false,
+    xForwardedForHeader: false,
+    forwardedHeader: false
+  },
   message: { error: 'Stylist rate limit reached. Please wait a moment.' }
 });
 
